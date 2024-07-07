@@ -1,0 +1,7 @@
+@mixin max-breakpoint($size) {
+    @media (max-width: $size) {
+        @content;
+    }
+}
+
+@mixin typography($font-size, $line-height, $font-weight, $letter-spacing: null) {}
