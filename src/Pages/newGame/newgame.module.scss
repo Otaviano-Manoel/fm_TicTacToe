@@ -1,0 +1,136 @@
+@import '../../assets/style/variables';
+@import '../../assets/style/mixins';
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 465px;
+    gap: 40px;
+
+    @include max-breakpoint($tablet) {
+        width: 460px;
+    }
+    @include max-breakpoint($mobile) {
+        margin: 0px 20px;
+    }
+
+    .container-select-mark {
+        background-color: $semi-dark-navy;
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0px 8px #10212a;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        color: $silver;
+        text-align: center;
+
+        .pick {
+            @include typography(16px, auto, true, 1px);
+        }
+
+        .container-pick {
+            display: flex;
+            padding: 9px 8px;
+            background-color: $dark-navy;
+            border-radius: 10px;
+            width: 100%;
+            height: 72px;
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+                width: 100%;
+                height: 100%;
+
+                .x,
+                .o {
+                    mask-repeat: no-repeat;
+                    mask-size: cover;
+                    width: 32px;
+                    height: 32px;
+                }
+
+                .x {
+                    mask-image: url('../../assets/images/icon-x.svg');
+                }
+                .o {
+                    mask-image: url('../../assets/images/icon-o.svg');
+                }
+
+                .x.select,
+                .o.select {
+                    background-color: $dark-navy;
+                }
+                .x.deselect,
+                .o.deselect {
+                    background-color: $silver;
+                }
+            }
+
+            .container.select {
+                background-color: $silver;
+            }
+            .container.deselect:hover {
+                background-color: rgba($color: #a8bfc9, $alpha: 0.05);
+            }
+
+            .container:hover {
+                cursor: pointer;
+            }
+        }
+
+        .remember {
+            @include typography(14px, auto, false, 0.88px);
+        }
+    }
+
+    .container-playgame {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+
+        .player,
+        .cpu {
+            width: 100%;
+            border-radius: 15px;
+            padding: 17px;
+            border-style: none;
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in;
+
+            @include typography(20px, auto, true, 1.25px);
+            color: $dark-navy;
+        }
+
+        .cpu {
+            background-color: $light-yellow;
+            box-shadow: 0px 8px #cc8b13;
+        }
+
+        .cpu:hover {
+            cursor: pointer;
+            background-color: $light-yellow-hover;
+        }
+
+        .player {
+            background-color: $light-blue;
+            box-shadow: 0px 8px #118c87;
+        }
+        .player:hover {
+            cursor: pointer;
+            background-color: $light-blue-hover;
+        }
+
+        .cpu:active,
+        .player:active {
+            transform: translateY(4px);
+            box-shadow: 0px 0px;
+        }
+    }
+}

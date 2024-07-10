@@ -1,0 +1,9 @@
+@import '../assets/style/variables';
+
+.app {
+    background-color: $dark-navy;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
