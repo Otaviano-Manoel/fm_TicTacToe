@@ -1,4 +1,3 @@
-import React from 'react';
 import { IGameManager } from './IGameManager';
 class ControllerGameManager {
     private state: IGameManager;
@@ -7,29 +6,24 @@ class ControllerGameManager {
         this.state = initialState;
     }
 
-    public updateValues = <T extends IGameManager, K extends keyof T>(
-        obj: T,
+    public updateValues = <K extends keyof IGameManager>(
         keyPath: string,
         value: any
     ): IGameManager => {
         const keys = keyPath.split('.') as K[];
-        const newState = { ...obj };
+        const newState = { ...this.state };
 
         let current: any = newState;
         keys.slice(0, -1).forEach((key: K) => {
             if (current[key] === undefined) {
-                throw new Error(
-                    `Key "${key.toString}" does not exist in the object.`
-                );
+                throw new Error(`Key "${key}" does not exist in the object.`);
             }
             current = current[key];
         });
 
         const finalKey = keys[keys.length - 1];
         if (current[finalKey] === undefined) {
-            throw new Error(
-                `Key "${finalKey.toString()}" does not exist in the object.`
-            );
+            throw new Error(`Key "${finalKey}" does not exist in the object.`);
         }
 
         current[finalKey] = value;
@@ -38,10 +32,6 @@ class ControllerGameManager {
 
         return newState;
     };
-
-    public getstate(): IGameManager {
-        return this.state;
-    }
 
     private handlerChangerMark(keys: any, newState: IGameManager) {
         if (keys.includes('player1')) {

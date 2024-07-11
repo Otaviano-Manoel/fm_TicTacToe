@@ -1,6 +1,8 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { defaultIGameManager, IGameManager } from './IGameManager';
+import { IGameManager } from './IGameManager';
+
+const LOCAL_GAME_MANAGER = 'LOCAL_GAME_MANAGER';
 
 const GameMangerContext = createContext<{ gameManager: IGameManager, setGameManager: Dispatch<SetStateAction<IGameManager>> } | undefined>(undefined);
 
@@ -20,13 +22,29 @@ function GameManager(props: GameManagerProps) {
 
     const [gameManager, setGameManager] = useState<IGameManager>(() => {
 
-        const local = localStorage.getItem('LOCAL_GAME_MANAGER');
+        const local = localStorage.getItem(LOCAL_GAME_MANAGER);
         if (!local) {
-            return defaultIGameManager;
+            return {
+                game: {
+                    type: 'none',
+                    player1: {
+                        playerType: 'user',
+                        mark: true,
+                    },
+                    player2: {
+                        playerType: 'user',
+                        mark: false,
+                    },
+                },
+            };
         }
 
         return JSON.parse(local!) as IGameManager;
     });
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_GAME_MANAGER, JSON.stringify(gameManager));
+    }, [gameManager])
 
     return (
         <GameMangerContext.Provider value={{ gameManager, setGameManager }}>

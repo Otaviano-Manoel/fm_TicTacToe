@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './assets/style/reset.scss';
 import GameManager from './Context/GameManager/GameManager';
 import { BrowserRouter } from 'react-router-dom';
+import GameBoard from './Context/GameBoard/GameBoard';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <GameManager>
-        <App />
+        <GameBoard>
+          <App />
+        </GameBoard>
       </GameManager>
     </BrowserRouter>
   </React.StrictMode>

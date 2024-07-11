@@ -11,17 +11,3 @@ export interface IGameManager {
         };
     };
 }
-
-export const defaultIGameManager: IGameManager = {
-    game: {
-        type: 'none',
-        player1: {
-            playerType: 'user',
-            mark: true,
-        },
-        player2: {
-            playerType: 'user',
-            mark: false,
-        },
-    },
-};

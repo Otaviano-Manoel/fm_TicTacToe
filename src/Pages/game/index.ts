@@ -1,1 +1,1 @@
-export { default as PlayGame } from './playGame';
+export { default as Game } from './game';
