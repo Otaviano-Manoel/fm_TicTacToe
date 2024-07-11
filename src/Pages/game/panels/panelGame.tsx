@@ -65,6 +65,11 @@ function PanelGame() {
                 turn: true,
                 fields: field,
                 markWinner: undefined,
+                numberWins: {
+                    ties: gameBoard.numberWins.ties,
+                    x: gameBoard.numberWins.x,
+                    o: gameBoard.numberWins.o
+                },
             });
         }
     }

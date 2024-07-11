@@ -31,6 +31,11 @@ function App() {
       turn: true,
       fields: field,
       markWinner: undefined,
+      numberWins: {
+        ties: 0,
+        x: 0,
+        o: 0,
+      },
     });
   }
 

@@ -81,11 +81,17 @@ function Game() {
                     });
                     updateBoard.endGame = true;
                     updateBoard.markWinner = updateBoard.turn;
+                    if (updateBoard.turn) {
+                        updateBoard.numberWins.x++;
+                    } else {
+                        updateBoard.numberWins.o++;
+                    }
                     navigate('panels')
                 }
                 else if (updateBoard.fields.every(e => e.marked)) {
                     updateBoard.endGame = true;
                     updateBoard.markWinner = undefined;
+                    updateBoard.numberWins.ties++;
                     navigate('panels')
                 }
             }
@@ -127,13 +133,13 @@ function Game() {
 
             <div className={styled.footer}>
                 <div className={styled.x}>
-                    <p>X ({gameManager.game.player1.mark ? 'YOU' : 'CPU'})<span className={styled.wins}>0</span></p>
+                    <p>X ({gameManager.game.player1.mark ? 'YOU' : 'CPU'})<span className={styled.wins}>{gameBoard.numberWins.x}</span></p>
                 </div>
                 <div className={styled.ties}>
-                    <p>TIES<span className={styled.wins}>0</span></p>
+                    <p>TIES<span className={styled.wins}>{gameBoard.numberWins.ties}</span></p>
                 </div>
                 <div className={styled.o}>
-                    <p>O ({gameManager.game.player1.mark ? 'CPU' : 'YOU'})<span className={styled.wins}>0</span></p>
+                    <p>O ({gameManager.game.player1.mark ? 'CPU' : 'YOU'})<span className={styled.wins}>{gameBoard.numberWins.o}</span></p>
                 </div>
             </div>
             <Outlet />
