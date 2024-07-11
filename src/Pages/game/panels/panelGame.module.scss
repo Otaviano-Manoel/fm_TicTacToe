@@ -1,0 +1,128 @@
+@import '../../../assets/style/variables';
+@import '../../../assets/style/mixins';
+
+.panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .background {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        background-color: $semi-dark-navy;
+        width: 100%;
+        padding: 45px 0px;
+
+        .p {
+            color: $silver;
+            @include typography(16px, auto, true, 1px);
+            margin-bottom: 16px;
+
+            @include max-breakpoint(481px) {
+                @include typography(14px, auto, true, 0.88px);
+            }
+        }
+        .p.desactive {
+            display: none;
+        }
+
+        .title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            @include typography(40px, auto, true, 2.5px);
+            margin-bottom: 24px;
+
+            .mark {
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 64px;
+                height: 64px;
+            }
+            .mark.o {
+                background-image: url('../../../assets/images/icon-o.svg');
+            }
+            .mark.x {
+                background-image: url('../../../assets/images/icon-x.svg');
+            }
+            .mark.desactive {
+                display: none;
+            }
+
+            @include max-breakpoint(481px) {
+                @include typography(24px, auto, true, 1.5px);
+                gap: 8px;
+
+                .mark {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            @include max-breakpoint(280px) {
+                @include typography(20px, auto, true, 1.5px);
+            }
+        }
+        .title.o {
+            color: $light-yellow;
+        }
+        .title.x {
+            color: $light-blue;
+        }
+        .title.nonewinner {
+            color: $silver;
+        }
+
+        .options {
+            display: flex;
+            gap: 16px;
+
+            .opt1,
+            .opt2 {
+                border-radius: 10px;
+                border-style: none;
+                padding: 15px 16px;
+
+                @include typography(16px, auto, true, 1px);
+                color: $dark-navy;
+            }
+
+            .opt1 {
+                background-color: $silver;
+                box-shadow: 0px 4px #6b8997;
+            }
+            .opt1:active {
+                background-color: $silver-hover;
+                transform: translateY(4px);
+                box-shadow: 0px 0px;
+            }
+            .opt2 {
+                background-color: $light-yellow;
+                box-shadow: 0px 4px #cc8b13;
+            }
+            .opt2:active {
+                background-color: $light-yellow-hover;
+                transform: translateY(4px);
+                box-shadow: 0px 0px;
+            }
+
+            .opt1:hover,
+            .opt2:hover {
+                cursor: pointer;
+            }
+
+            @include max-breakpoint(280px) {
+                padding: 8px;
+            }
+        }
+    }
+}

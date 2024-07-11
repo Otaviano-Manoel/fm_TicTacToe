@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { useGameBoard } from '../../Context/GameBoard/GameBoard';
 import ControllerGameBoard from '../../Context/GameBoard/GameBoardUtils';
 import { calculateWinner } from './GameUtils';
-import { Link } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import SoloGame from './solo/soloGame';
 import { IGame } from '../../Interface/IGame';
 
@@ -15,6 +15,7 @@ function Game() {
 
     const { gameManager } = useGameManager();
     const { gameBoard, setGameBoard } = useGameBoard();
+    const navigate = useNavigate();
     const [typeGame, setTypeGame] = useState<IGame | undefined>();
     const controller = new ControllerGameBoard(gameBoard);
 
@@ -79,6 +80,13 @@ function Game() {
                         })
                     });
                     updateBoard.endGame = true;
+                    updateBoard.markWinner = updateBoard.turn;
+                    navigate('panels')
+                }
+                else if (updateBoard.fields.every(e => e.marked)) {
+                    updateBoard.endGame = true;
+                    updateBoard.markWinner = undefined;
+                    navigate('panels')
                 }
             }
             calculateVictory();
@@ -108,7 +116,7 @@ function Game() {
                     <div className={classTurn} />
                     <p className={styled.turn}>TURN</p>
                 </div>
-                <Link to={'/'} className={styled.Link}>
+                <Link to={'panels'} className={styled.Link}>
                     <img className={styled.restart} src={restart} alt="Restart Game" />
                 </Link>
             </div>
@@ -128,6 +136,7 @@ function Game() {
                     <p>O ({gameManager.game.player1.mark ? 'CPU' : 'YOU'})<span className={styled.wins}>0</span></p>
                 </div>
             </div>
+            <Outlet />
         </main>
     );
 }

@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { NewGame } from './newGame';
 import { Game } from './game';
 import { useGameBoard } from '../Context/GameBoard/GameBoard';
+import PanelGame from './game/panels/panelGame';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
       startGame: false,
       turn: true,
       fields: field,
+      markWinner: undefined,
     });
   }
 
@@ -37,7 +39,9 @@ function App() {
     <div className={styled.app}>
       <Routes>
         <Route path='/' element={<NewGame />}></Route>
-        <Route path='/game' element={<Game />}></Route>
+        <Route path='/game' element={<Game />}>
+          <Route path='panels' element={<PanelGame />}></Route>
+        </Route>
       </Routes>
     </div>
   );

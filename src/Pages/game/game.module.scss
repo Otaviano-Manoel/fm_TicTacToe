@@ -107,6 +107,7 @@
             .restart:active {
                 transform: translateY(4px);
                 box-shadow: 0px 0px;
+                background-color: $silver-hover;
             }
             .restart:hover {
                 cursor: pointer;
