@@ -1,0 +1,132 @@
+@import '../../assets/style/variables';
+@import '../../assets/style/mixins';
+
+.server {
+    display: flex;
+    flex-direction: column;
+
+    width: 460px;
+
+    @include max-breakpoint($mobile) {
+        padding: 0px 10px;
+        width: 100%;
+    }
+    .port-container {
+        background-color: $semi-dark-navy;
+        border-radius: 15px;
+        padding: 24px;
+        box-shadow: 0px 8px #10212a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-self: center;
+        gap: 20px;
+        margin-bottom: 30px;
+
+        .title {
+            @include typography(16px, auto, true, 1px);
+            color: $silver;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .port {
+            width: 100%;
+            background-color: $dark-navy;
+            border-radius: 10px;
+            height: 53px;
+            border-style: none;
+            text-align: center;
+            color: $silver;
+            @include typography(24px, auto, true, 1.5px);
+        }
+        .port:focus {
+            outline: none;
+        }
+
+        @include max-breakpoint($mobile) {
+            .port {
+                @include typography(20px, auto, true, 1.25px);
+            }
+        }
+    }
+
+    button {
+        border-radius: 15px;
+        width: 100%;
+        height: 67px;
+        border-style: none;
+
+        @include typography(20px, auto, true, 1.25px);
+        color: $dark-navy;
+
+        @include max-breakpoint($mobile) {
+            height: 55px;
+        }
+    }
+    button:hover {
+        cursor: pointer;
+    }
+
+    .options {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 10px;
+        gap: 40px;
+        margin-bottom: 24px;
+
+        .opt1 {
+            background-color: $light-yellow;
+            box-shadow: 0px 8px #cc8b13;
+        }
+        .opt1.active {
+            background-color: $light-yellow-hover;
+
+            transform: translateY(4px);
+            box-shadow: 0px 0px;
+        }
+
+        .opt2 {
+            background-color: $light-blue;
+            box-shadow: 0px 8px #118c87;
+        }
+        .opt2.active {
+            background-color: $light-blue-hover;
+
+            transform: translateY(4px);
+            box-shadow: 0px 0px;
+        }
+    }
+
+    .connect {
+        background-color: $silver;
+        box-shadow: 0px 8px #6b8997;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .connect:active {
+        background-color: $silver-hover;
+        transform: translateY(4px);
+        box-shadow: 0px 0px;
+    }
+
+    .connect.desactive {
+        visibility: hidden;
+    }
+
+    .start {
+        background-color: #4caf50;
+        box-shadow: 0px 8px #2c6c2f;
+        text-transform: uppercase;
+    }
+
+    .start:active {
+        background-color: #388e3c;
+        transform: translateY(4px);
+        box-shadow: 0px 0px;
+    }
+    .start.hidden {
+        visibility: hidden;
+    }
+}

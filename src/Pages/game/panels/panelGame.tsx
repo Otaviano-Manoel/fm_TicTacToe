@@ -5,6 +5,7 @@ import { useGameManager } from '../../../Context/GameManager/GameManager';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import ControllerGameBoard from '../../../Context/GameBoard/GameBoardUtils';
+import { getDefaultIGameBoard } from '../../../Context/GameBoard/IGameBoard';
 
 function PanelGame() {
     const { gameBoard, setGameBoard } = useGameBoard();
@@ -55,22 +56,9 @@ function PanelGame() {
 
     const handlerOnClick = (opt: boolean) => {
         if (opt) {
-            let field: any = [];
-            for (let index = 0; index < 9; index++) {
-                field.push({ styled: '', marked: false, mark: null, winner: false });
-            }
-            setGameBoard({
-                endGame: false,
-                startGame: true,
-                turn: true,
-                fields: field,
-                markWinner: undefined,
-                numberWins: {
-                    ties: gameBoard.numberWins.ties,
-                    x: gameBoard.numberWins.x,
-                    o: gameBoard.numberWins.o
-                },
-            });
+            const newGame = getDefaultIGameBoard();
+            newGame.startGame = true;
+            setGameBoard(newGame);
         }
     }
 

@@ -7,19 +7,22 @@ import './assets/style/reset.scss';
 import GameManager from './Context/GameManager/GameManager';
 import { BrowserRouter } from 'react-router-dom';
 import GameBoard from './Context/GameBoard/GameBoard';
+import { SocketProvider } from './Context/server/Socket';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <GameManager>
-        <GameBoard>
-          <App />
-        </GameBoard>
-      </GameManager>
-    </BrowserRouter>
+    <SocketProvider>
+      <BrowserRouter>
+        <GameManager>
+          <GameBoard>
+            <App />
+          </GameBoard>
+        </GameManager>
+      </BrowserRouter>
+    </SocketProvider>
   </React.StrictMode>
 );
 

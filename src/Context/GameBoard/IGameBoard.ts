@@ -16,25 +16,30 @@ export interface IGameBoard {
     }[];
 }
 
-export const defaultIGameBoard: IGameBoard = {
-    endGame: false,
-    startGame: false,
-    turn: true,
-    markWinner: undefined,
-    numberWins: {
-        ties: 0,
-        x: 0,
-        o: 0,
-    },
-    fields: [
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-        { styled: '', marked: false, mark: null, winner: false },
-    ],
+export const getDefaultIGameBoard = () => {
+    const defaultIGameBoard: IGameBoard = {
+        endGame: false,
+        startGame: false,
+        turn: true,
+        markWinner: undefined,
+        numberWins: {
+            ties: 0,
+            x: 0,
+            o: 0,
+        },
+        fields: [
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+            { styled: '', marked: false, mark: null, winner: false },
+        ],
+    };
+
+    const fieldsCopy = defaultIGameBoard.fields.map((field) => ({ ...field }));
+    return { ...defaultIGameBoard, fields: fieldsCopy };
 };

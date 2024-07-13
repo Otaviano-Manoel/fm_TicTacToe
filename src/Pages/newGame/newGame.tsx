@@ -5,26 +5,20 @@ import classNames from 'classnames';
 import { useGameManager } from '../../Context/GameManager/GameManager';
 import ControllerGameManager from '../../Context/GameManager/GameMangerUtils';
 import { Link } from 'react-router-dom';
-import { IGameManager } from '../../Context/GameManager/IGameManager';
+import { getDefaultGameManager, IGameManager } from '../../Context/GameManager/IGameManager';
+import { useSocket } from '../../Context/server/Socket';
 
 function NewGame() {
+
+    const socket = useSocket();
     const { gameManager, setGameManager } = useGameManager();
     const controller = new ControllerGameManager(gameManager);
 
     useEffect(() => {
-        const resetGame: IGameManager = {
-            game: {
-                type: 'none',
-                player1: {
-                    playerType: 'user',
-                    mark: gameManager.game.player1.mark,
-                },
-                player2: {
-                    playerType: 'user',
-                    mark: gameManager.game.player2.mark,
-                },
-            },
-        };
+        const resetGame: IGameManager = getDefaultGameManager();
+        resetGame.game.player1.mark = gameManager.game.player1.mark;
+        resetGame.game.player2.mark = gameManager.game.player2.mark;
+        resetGame.server = { ...gameManager.server };
 
         setGameManager(resetGame);
     }, [])
@@ -53,6 +47,11 @@ function NewGame() {
     }
 
     const handlerSelectGame = (value: 'multiplayer' | 'solo') => {
+
+        if (value === 'solo' && socket.active) {
+            socket.emit('closed', gameManager.server.code, gameManager.server.client);
+            socket.disconnect();
+        }
         const updatedGameManager = controller.updateValues('game.type', value)
         setGameManager(updatedGameManager);
     }
@@ -76,7 +75,9 @@ function NewGame() {
                 <Link className={styled['Link']} to='/game'>
                     <button onClick={() => handlerSelectGame('solo')} className={styled.cpu} type="button" aria-label='New Game Versus CPU'>NEW GAME (VS CPU)</button>
                 </Link>
-                <button onClick={() => handlerSelectGame('multiplayer')} className={styled.player} type="button" aria-label='New Game Versus Player'>NEW GAME  (VS PLAYER)</button>
+                <Link className={styled['Link']} to='/connecthost'>
+                    <button onClick={() => handlerSelectGame('multiplayer')} className={styled.player} type="button" aria-label='New Game Versus Player'>NEW GAME  (VS PLAYER)</button>
+                </Link>
             </div>
         </main >
     );

@@ -29,6 +29,7 @@ class ControllerGameManager {
         current[finalKey] = value;
 
         this.handlerChangerMark(keys, newState);
+        this.handlerChangerHosttoClient(keys, newState);
 
         return newState;
     };
@@ -38,6 +39,19 @@ class ControllerGameManager {
             newState.game.player2.mark = !newState.game.player1.mark;
         } else if (keys.includes('player2')) {
             newState.game.player1.mark = !newState.game.player2.mark;
+        }
+        return newState;
+    }
+
+    private handlerChangerHosttoClient(keys: any, newState: IGameManager) {
+        if (keys.includes('host')) {
+            if (newState.server.host) {
+                newState.server.client = !newState.server.host;
+            }
+        } else if (keys.includes('client')) {
+            if (newState.server.client) {
+                newState.server.host = !newState.server.client;
+            }
         }
         return newState;
     }

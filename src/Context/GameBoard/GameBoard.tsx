@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { defaultIGameBoard, IGameBoard } from './IGameBoard';
+import { getDefaultIGameBoard, IGameBoard } from './IGameBoard';
 
 const GameBoardContext = createContext<{ gameBoard: IGameBoard, setGameBoard: Dispatch<SetStateAction<IGameBoard>> } | undefined>(undefined);
 
@@ -21,7 +21,7 @@ function GameBoard(props: GameBoardProps) {
     const [gameBoard, setGameBoard] = useState<IGameBoard>(() => {
         const local = localStorage.getItem('LOCAL_GAME_BOARD');
         if (!local) {
-            return { ...defaultIGameBoard };
+            return getDefaultIGameBoard();
         }
 
         return JSON.parse(local!) as IGameBoard;

@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { IGameManager } from './IGameManager';
+import { getDefaultGameManager, IGameManager } from './IGameManager';
 
 const LOCAL_GAME_MANAGER = 'LOCAL_GAME_MANAGER';
 
@@ -24,19 +24,7 @@ function GameManager(props: GameManagerProps) {
 
         const local = localStorage.getItem(LOCAL_GAME_MANAGER);
         if (!local) {
-            return {
-                game: {
-                    type: 'none',
-                    player1: {
-                        playerType: 'user',
-                        mark: true,
-                    },
-                    player2: {
-                        playerType: 'user',
-                        mark: false,
-                    },
-                },
-            };
+            return getDefaultGameManager();
         }
 
         return JSON.parse(local!) as IGameManager;
