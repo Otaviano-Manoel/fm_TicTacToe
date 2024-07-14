@@ -7,7 +7,7 @@ import './assets/style/reset.scss';
 import GameManager from './Context/GameManager/GameManager';
 import { BrowserRouter } from 'react-router-dom';
 import GameBoard from './Context/GameBoard/GameBoard';
-import { SocketProvider } from './Context/server/Socket';
+import { SocketProvider } from './Context/Socket/Socket';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

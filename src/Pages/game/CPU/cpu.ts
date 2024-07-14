@@ -1,4 +1,4 @@
-import { IGameBoard } from '../../../../Context/GameBoard/IGameBoard';
+import { IGameBoard } from '../../../Context/GameBoard/IGameBoard';
 
 class CPU {
     private board: (boolean | null)[] = [];

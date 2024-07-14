@@ -2,59 +2,86 @@ import React, { useCallback, useEffect } from 'react';
 import styled from './newgame.module.scss';
 import logo from '../../assets/images/logo.svg';
 import classNames from 'classnames';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGameManager } from '../../Context/GameManager/GameManager';
 import ControllerGameManager from '../../Context/GameManager/GameMangerUtils';
-import { Link } from 'react-router-dom';
 import { getDefaultGameManager, IGameManager } from '../../Context/GameManager/IGameManager';
-import { useSocket } from '../../Context/server/Socket';
 
 function NewGame() {
-
-    const socket = useSocket();
+    const navigate = useNavigate();
     const { gameManager, setGameManager } = useGameManager();
-    const controller = new ControllerGameManager(gameManager);
+    const controllerManager = new ControllerGameManager(gameManager);
 
     useEffect(() => {
         const resetGame: IGameManager = getDefaultGameManager();
-        resetGame.game.player1.mark = gameManager.game.player1.mark;
-        resetGame.game.player2.mark = gameManager.game.player2.mark;
-        resetGame.server = { ...gameManager.server };
-
-        setGameManager(resetGame);
-    }, [])
+        setGameManager(
+            controllerManager.updateValuesArray(
+                ['game.player1', 'game.player2'],
+                [gameManager.game.player1, gameManager.game.player2],
+                resetGame
+            )
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getClassMarkSelect = useCallback(() => {
         return {
             x: {
-                container: classNames(styled.container,
-                    gameManager.game.player1.mark ? styled.select : styled.deselect),
-                mark: classNames(styled.x,
-                    gameManager.game.player1.mark ? styled.select : styled.deselect),
+                container: classNames(
+                    styled.container,
+                    gameManager.game.player1.mark ? styled.select : styled.deselect
+                ),
+                mark: classNames(
+                    styled.x,
+                    gameManager.game.player1.mark ? styled.select : styled.deselect
+                ),
             },
             o: {
-                container: classNames(styled.container,
-                    gameManager.game.player1.mark ? styled.deselect : styled.select),
-                mark: classNames(styled.o,
-                    gameManager.game.player1.mark ? styled.deselect : styled.select),
-            }
-        }
+                container: classNames(
+                    styled.container,
+                    gameManager.game.player1.mark ? styled.deselect : styled.select
+                ),
+                mark: classNames(
+                    styled.o,
+                    gameManager.game.player1.mark ? styled.deselect : styled.select
+                ),
+            },
+        };
     }, [gameManager]);
     const classMarkSelect = getClassMarkSelect();
 
     const handlerSelectMark = (x: boolean) => {
-        const updatedGameManager = controller.updateValues('game.player1.mark', x);
-        setGameManager(updatedGameManager);
-    }
+        setGameManager(
+            controllerManager.updateValuesArray(['game.player1.mark'], [x], gameManager)
+        );
+    };
 
-    const handlerSelectGame = (value: 'multiplayer' | 'solo') => {
-
-        if (value === 'solo' && socket.active) {
-            socket.emit('closed', gameManager.server.code, gameManager.server.client);
-            socket.disconnect();
+    const handlerSelectGame = (value: 'solo' | 'multiplayer') => {
+        if (value === 'solo') {
+            setGameManager(
+                controllerManager.updateValuesArray(
+                    ['game.player2.playerType', 'game.type'],
+                    ['cpu', value], gameManager)
+            );
+        } else if (value === 'multiplayer') {
+            setGameManager(
+                controllerManager.updateValuesArray(
+                    ['game.player2.playerType', 'game.type'],
+                    ['user', value], gameManager)
+            );
         }
-        const updatedGameManager = controller.updateValues('game.type', value)
-        setGameManager(updatedGameManager);
-    }
+    };
+
+    // impede que retorne de forma indevida para pagina do jogo.
+    const preventBack = (event: any) => {
+        if (window.location.pathname === '/game/panels') {
+            event.preventDefault();
+            navigate('/');
+            setTimeout(() => window.location.reload(), 0);
+        }
+    };
+
+    window.addEventListener('popstate', preventBack);
 
     return (
         <main className={styled.main}>
@@ -73,13 +100,27 @@ function NewGame() {
             </div>
             <div className={styled['container-playgame']}>
                 <Link className={styled['Link']} to='/game'>
-                    <button onClick={() => handlerSelectGame('solo')} className={styled.cpu} type="button" aria-label='New Game Versus CPU'>NEW GAME (VS CPU)</button>
+                    <button
+                        onClick={() => handlerSelectGame('solo')}
+                        className={styled.cpu}
+                        type="button"
+                        aria-label='New Game Versus CPU'
+                    >
+                        NEW GAME (VS CPU)
+                    </button>
                 </Link>
                 <Link className={styled['Link']} to='/connecthost'>
-                    <button onClick={() => handlerSelectGame('multiplayer')} className={styled.player} type="button" aria-label='New Game Versus Player'>NEW GAME  (VS PLAYER)</button>
+                    <button
+                        onClick={() => handlerSelectGame('multiplayer')}
+                        className={styled.player}
+                        type="button"
+                        aria-label='New Game Versus Player'
+                    >
+                        NEW GAME (VS PLAYER)
+                    </button>
                 </Link>
             </div>
-        </main >
+        </main>
     );
 }
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { IGameBoard } from './IGameBoard';
 
 class ControllerGameBoard {
@@ -8,7 +7,7 @@ class ControllerGameBoard {
         this.state = initialState;
     }
 
-    public updateValues = <T extends IGameBoard, K extends keyof T>(
+    public updateValues = <T extends IGameBoard>(
         obj: T,
         keyPath: string,
         value: any

@@ -6,12 +6,36 @@ class ControllerGameManager {
         this.state = initialState;
     }
 
-    public updateValues = <K extends keyof IGameManager>(
+    public updateValuesArray = (
+        keyPaths: string[],
+        values: any[],
+        obj: IGameManager
+    ) => {
+        if (keyPaths.length !== values.length) {
+            throw new Error(
+                'Os arrays de keyPaths e values devem ter o mesmo tamanho.'
+            );
+        }
+
+        let state = { ...obj };
+
+        for (let i = 0; i < keyPaths.length; i++) {
+            const path = keyPaths[i];
+            const value = values[i];
+
+            state = this.updateValues(path, value, state);
+        }
+
+        return state;
+    };
+
+    private updateValues = <K extends keyof IGameManager>(
         keyPath: string,
-        value: any
+        value: any,
+        obj: IGameManager | undefined = undefined
     ): IGameManager => {
         const keys = keyPath.split('.') as K[];
-        const newState = { ...this.state };
+        const newState = obj === undefined ? { ...this.state } : obj;
 
         let current: any = newState;
         keys.slice(0, -1).forEach((key: K) => {

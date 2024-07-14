@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import styled from './app.module.scss';
 import { useGameManager } from '../Context/GameManager/GameManager';
-import { Route, Routes } from 'react-router-dom';
-import { NewGame } from './newGame';
-import { Game } from './game';
 import { useGameBoard } from '../Context/GameBoard/GameBoard';
-import PanelGame from './game/panels/panelGame';
-import Connect from './connecthost/Connect';
-import { useSocket } from '../Context/server/Socket';
 import { getDefaultIGameBoard } from '../Context/GameBoard/IGameBoard';
+import NewGame from './newGame';
+import Game from './game';
+import PanelGame from './game/panels/panelGame';
+import ServerConfiguration from './ServerConfiguration';
 
 function App() {
 
@@ -17,28 +16,19 @@ function App() {
 
   useEffect(() => {
     if (gameManager.game.type === 'none') {
-      resetBoard();
+      setGameBoard(getDefaultIGameBoard());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameManager.game.type]);
 
-
-  const resetBoard = () => {
-    let field: any = [];
-    for (let index = 0; index < 9; index++) {
-      field.push({ styled: '', marked: false, mark: null, winner: false });
-    }
-    setGameBoard(getDefaultIGameBoard());
-  }
+  }, [gameManager.game.type, setGameBoard]);
 
 
   return (
     <div className={styled.app}>
       <Routes>
-        <Route path='/' element={<NewGame />}></Route>
-        <Route path='/connecthost' element={<Connect />}></Route>
-        <Route path='/game' element={<Game />}>
-          <Route path='panels' element={<PanelGame />}></Route>
+        <Route path="/" element={<NewGame />} />
+        <Route path="/connecthost" element={<ServerConfiguration />} />
+        <Route path="/game" element={<Game />}>
+          <Route path="panels" element={<PanelGame />} />
         </Route>
       </Routes>
     </div>
