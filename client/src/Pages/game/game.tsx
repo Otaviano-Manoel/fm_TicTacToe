@@ -8,7 +8,7 @@ import { useGameManager } from '../../context/GameManager';
 import { useGameBoard } from '../../context/GameBoardContext';
 import ControllerGameBoard from '../../utils/GameBoardUtils';
 import { calculateWinner } from '../../utils/GameUtils';
-import CPU from './CPU/cpu';
+import CPU from '../../utils/CPU';
 
 function Game() {
     const { gameManager } = useGameManager();

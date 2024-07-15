@@ -3,10 +3,12 @@ import styled from './connect.module.scss';
 import { useGameManager } from '../../context/GameManager';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import classNames from 'classnames';
+import { useSocket } from '../../context/Socket';
 
 function ServerConfiguration() {
     const { gameManager, setGameManager } = useGameManager();
     const controller = new ControllerGameManager(gameManager);
+    const socket = useSocket();
     const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
@@ -57,20 +59,17 @@ function ServerConfiguration() {
 
     // Handler to set the server as host
     const handlerHost = () => {
-        setGameManager(controller.updateValuesArray(['server.host'], [true], gameManager));
+        socket.emit('createRoom');
     };
 
     // Handler to set the server as client and manage disconnection
     const handlerClient = () => {
-        if (gameManager.server.host) {
-            handlerConnectorDisconnect('disconnect');
-        }
-        setGameManager(controller.updateValuesArray(['server.client'], [true], gameManager));
     };
 
     // Handler to connect or disconnect based on the option
     const handlerConnectorDisconnect = (opt: 'disconnect' | 'connect') => {
         if (gameManager.server.code !== null && opt === 'disconnect') {
+            socket.emit('closeRoom', gameManager.server.code);
             console.log('Disconnect from server and reset server values.');
             setInputValue('');
         }
@@ -93,7 +92,7 @@ function ServerConfiguration() {
                     onChange={onChangeValue}
                     disabled={getFunctionsAndStyled().inputDisable}
                     className={styled.port}
-                    type="number"
+                    type="text"
                     id="server"
                     placeholder={getTextFields().inputValue}
                     value={inputValue}

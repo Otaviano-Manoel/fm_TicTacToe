@@ -14,15 +14,15 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <SocketProvider>
-      <BrowserRouter>
-        <GameManager>
-          <GameBoard>
+    <BrowserRouter>
+      <GameManager>
+        <GameBoard>
+          <SocketProvider>
             <App />
-          </GameBoard>
-        </GameManager>
-      </BrowserRouter>
-    </SocketProvider>
+          </SocketProvider>
+        </GameBoard>
+      </GameManager>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
