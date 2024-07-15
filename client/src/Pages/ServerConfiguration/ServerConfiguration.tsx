@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled from './connect.module.scss';
-import { useGameManager } from '../../Context/GameManager/GameManager';
-import ControllerGameManager from '../../Context/GameManager/GameMangerUtils';
+import { useGameManager } from '../../context/GameManager';
+import ControllerGameManager from '../../utils/GameMangerUtils';
 import classNames from 'classnames';
 
 function ServerConfiguration() {

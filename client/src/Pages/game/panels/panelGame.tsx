@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import styled from './panelGame.module.scss';
-import { useGameBoard } from '../../../Context/GameBoard/GameBoard';
-import { useGameManager } from '../../../Context/GameManager/GameManager';
-import { getDefaultIGameBoard } from '../../../Context/GameBoard/IGameBoard';
+import { useGameBoard } from '../../../context/GameBoardContext';
+import { useGameManager } from '../../../context/GameManager';
+import { getDefaultIGameBoard } from '../../../interface/IGameBoard';
 
 function PanelGame() {
     const { gameBoard, setGameBoard } = useGameBoard();

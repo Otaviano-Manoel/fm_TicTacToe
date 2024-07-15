@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { getDefaultGameManager, IGameManager } from './IGameManager';
+import { getDefaultGameManager, IGameManager } from '../interface/IGameManager';
 
 const LOCAL_GAME_MANAGER = 'LOCAL_GAME_MANAGER';
 

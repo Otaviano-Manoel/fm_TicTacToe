@@ -4,10 +4,10 @@ import './index.css';
 import App from './Pages/App';
 import reportWebVitals from './reportWebVitals';
 import './assets/style/reset.scss';
-import GameManager from './Context/GameManager/GameManager';
+import GameManager from './context/GameManager';
 import { BrowserRouter } from 'react-router-dom';
-import GameBoard from './Context/GameBoard/GameBoard';
-import { SocketProvider } from './Context/Socket/Socket';
+import GameBoard from './context/GameBoardContext';
+import { SocketProvider } from './context/Socket';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

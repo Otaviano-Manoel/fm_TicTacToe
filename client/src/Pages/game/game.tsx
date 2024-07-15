@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import styled from './game.module.scss';
 import logo from '../../assets/images/logo.svg';
 import restart from '../../assets/images/icon-restart.svg';
-import { useGameManager } from '../../Context/GameManager/GameManager';
-import { useGameBoard } from '../../Context/GameBoard/GameBoard';
-import ControllerGameBoard from '../../Context/GameBoard/GameBoardUtils';
-import { calculateWinner } from './GameUtils';
+import { useGameManager } from '../../context/GameManager';
+import { useGameBoard } from '../../context/GameBoardContext';
+import ControllerGameBoard from '../../utils/GameBoardUtils';
+import { calculateWinner } from '../../utils/GameUtils';
 import CPU from './CPU/cpu';
 
 function Game() {

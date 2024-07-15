@@ -1,4 +1,4 @@
-import { IGameBoard } from '../../Context/GameBoard/IGameBoard';
+import { IGameBoard } from '../interface/IGameBoard';
 
 export const calculateWinner = (gameBoard: IGameBoard) => {
     const getMarkedBoard = gameBoard.fields.map((x) => x.mark);

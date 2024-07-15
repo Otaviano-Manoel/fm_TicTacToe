@@ -1,4 +1,4 @@
-import { IGameManager } from './IGameManager';
+import { IGameManager } from '../interface/IGameManager';
 class ControllerGameManager {
     private state: IGameManager;
 

@@ -3,9 +3,9 @@ import styled from './newgame.module.scss';
 import logo from '../../assets/images/logo.svg';
 import classNames from 'classnames';
 import { Link, useNavigate } from 'react-router-dom';
-import { useGameManager } from '../../Context/GameManager/GameManager';
-import ControllerGameManager from '../../Context/GameManager/GameMangerUtils';
-import { getDefaultGameManager, IGameManager } from '../../Context/GameManager/IGameManager';
+import { useGameManager } from '../../context/GameManager';
+import ControllerGameManager from '../../utils/GameMangerUtils';
+import { getDefaultGameManager, IGameManager } from '../../interface/IGameManager';
 
 function NewGame() {
     const navigate = useNavigate();

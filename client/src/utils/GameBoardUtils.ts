@@ -1,4 +1,4 @@
-import { IGameBoard } from './IGameBoard';
+import { IGameBoard } from '../interface/IGameBoard';
 
 class ControllerGameBoard {
     private state: IGameBoard;

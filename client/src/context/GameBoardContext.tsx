@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { getDefaultIGameBoard, IGameBoard } from './IGameBoard';
+import { getDefaultIGameBoard, IGameBoard } from '../interface/IGameBoard';
 
 const GameBoardContext = createContext<{ gameBoard: IGameBoard, setGameBoard: Dispatch<SetStateAction<IGameBoard>> } | undefined>(undefined);
 
