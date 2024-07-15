@@ -15,6 +15,7 @@ export interface IGameManager {
         code: number | null;
         host: boolean;
         client: boolean;
+        move: number | null;
     };
 }
 
@@ -35,6 +36,7 @@ export const getDefaultGameManager = (): IGameManager => {
             code: null,
             host: false,
             client: false,
+            move: null,
         },
     };
 

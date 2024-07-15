@@ -6,8 +6,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useGameManager } from '../../context/GameManager';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import { getDefaultGameManager, IGameManager } from '../../interface/IGameManager';
+import { useSocket } from '../../context/Socket';
 
 function NewGame() {
+    const socket = useSocket();
     const navigate = useNavigate();
     const { gameManager, setGameManager } = useGameManager();
     const controllerManager = new ControllerGameManager(gameManager);
@@ -16,8 +18,8 @@ function NewGame() {
         const resetGame: IGameManager = getDefaultGameManager();
         setGameManager(
             controllerManager.updateValuesArray(
-                ['game.player1', 'game.player2'],
-                [gameManager.game.player1, gameManager.game.player2],
+                ['game.player1', 'game.player2'/*, 'server'*/],
+                [gameManager.game.player1, gameManager.game.player2/*, gameManager.server*/],
                 resetGame
             )
         );
@@ -63,6 +65,17 @@ function NewGame() {
                     ['game.player2.playerType', 'game.type'],
                     ['cpu', value], gameManager)
             );
+
+            if (gameManager.server.code !== null) {
+                if (gameManager.server.host) {
+                    socket.emit('closeRoom', gameManager.server.code);
+                }
+                else if (gameManager.server.client) {
+                    socket.emit('exitRoom', gameManager.server.code);
+                }
+
+                console.log(gameManager)
+            }
         } else if (value === 'multiplayer') {
             setGameManager(
                 controllerManager.updateValuesArray(
@@ -71,17 +84,6 @@ function NewGame() {
             );
         }
     };
-
-    // impede que retorne de forma indevida para pagina do jogo.
-    const preventBack = (event: any) => {
-        if (window.location.pathname === '/game/panels') {
-            event.preventDefault();
-            navigate('/');
-            setTimeout(() => window.location.reload(), 0);
-        }
-    };
-
-    window.addEventListener('popstate', preventBack);
 
     return (
         <main className={styled.main}>

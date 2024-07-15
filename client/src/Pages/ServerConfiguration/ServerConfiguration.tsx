@@ -54,27 +54,35 @@ function ServerConfiguration() {
 
     // Handler for input value change
     const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.currentTarget.value);
+        setInputValue(event.currentTarget.value.toUpperCase());
     };
 
     // Handler to set the server as host
     const handlerHost = () => {
+        if (gameManager.server.code !== null) return;
         socket.emit('createRoom');
     };
 
     // Handler to set the server as client and manage disconnection
     const handlerClient = () => {
+        if (gameManager.server.code !== null) return;
+        setGameManager(controller.updateValuesArray(['server.client'], [true], gameManager));
     };
 
     // Handler to connect or disconnect based on the option
     const handlerConnectorDisconnect = (opt: 'disconnect' | 'connect') => {
         if (gameManager.server.code !== null && opt === 'disconnect') {
-            socket.emit('closeRoom', gameManager.server.code);
+            if (gameManager.server.host) {
+                socket.emit('closeRoom', gameManager.server.code);
+            }
+            else if (gameManager.server.client) {
+                socket.emit('exitRoom', gameManager.server.code);
+            }
             console.log('Disconnect from server and reset server values.');
-            setInputValue('');
         }
 
         if (gameManager.server.client && opt === 'connect') {
+            socket.emit('enterRoom', inputValue);
             console.log('Connect the client to server and room.');
         }
     };
@@ -82,6 +90,7 @@ function ServerConfiguration() {
     // Handler to start the game
     const handlerStartGame = () => {
         console.log('Start the game.');
+        socket.emit('startGame', gameManager.server.code, gameManager.game.player2.mark);
     };
 
     return (

@@ -9,11 +9,14 @@ import { useGameBoard } from '../../context/GameBoardContext';
 import ControllerGameBoard from '../../utils/GameBoardUtils';
 import { calculateWinner } from '../../utils/GameUtils';
 import CPU from '../../utils/CPU';
+import ControllerGameManager from '../../utils/GameMangerUtils';
+import { useSocket } from '../../context/Socket';
 
 function Game() {
-    const { gameManager } = useGameManager();
+    const { gameManager, setGameManager } = useGameManager();
     const { gameBoard, setGameBoard } = useGameBoard();
     const navigate = useNavigate();
+    const socket = useSocket();
     const controller = new ControllerGameBoard(gameBoard);
 
     // Handle CPU move in solo game
@@ -21,6 +24,13 @@ function Game() {
         if (gameManager.game.type === 'solo') {
             const move = moveCPU();
             if (move !== undefined) {
+                selectField(move);
+            }
+        }
+        else if (gameManager.game.type === 'multiplayer') {
+            if (gameManager.server.move !== null) {
+                let move = gameManager.server.move;
+                setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.move'], [null], gameManager));
                 selectField(move);
             }
         }
@@ -53,14 +63,29 @@ function Game() {
 
     // Handle field click event
     const handlerOnClick = (i: number) => {
-        if (gameManager.game.type === 'solo' && gameManager.game.player1.mark !== gameBoard.turn) {
-            return;
+        if (gameManager.game.type === 'solo') {
+            if (gameManager.game.player1.mark !== gameBoard.turn) {
+                return;
+            }
+            if (!selectField(i)) return;
         }
-        if (!selectField(i)) return;
 
         if (gameManager.game.type === 'multiplayer') {
-            console.log('implementar o segundo jogador, (faltando)')
+            if (gameManager.server.host) {
+                if (gameManager.game.player1.mark !== gameBoard.turn) {
+                    return;
+                }
+            }
+            else if (gameManager.server.client) {
+                if (gameManager.game.player2.mark !== gameBoard.turn) {
+                    return;
+                }
+            }
+            if (!selectField(i)) return;
+            socket.emit('move', gameManager.server.code, i, gameManager.server.host);
+            console.log('enviar para o outro jogador');
         }
+
     };
 
     // Select a field and update game state

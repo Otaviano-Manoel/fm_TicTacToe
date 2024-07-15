@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import styled from './app.module.scss';
 import { useGameManager } from '../context/GameManager';
 import { useGameBoard } from '../context/GameBoardContext';
@@ -13,19 +13,18 @@ function App() {
 
   const { gameManager } = useGameManager();
   const { setGameBoard } = useGameBoard();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (gameManager.game.type === 'none') {
       setGameBoard(getDefaultIGameBoard());
     };
-
-  }, [gameManager.game.type, setGameBoard]);
-
+  }, [gameManager, navigate]);
 
   return (
     <div className={styled.app}>
-      <Routes>
-        <Route path="/" element={<NewGame />} />
+      <Routes >
+        <Route index path='/' element={<NewGame />} />
         <Route path="/connecthost" element={<ServerConfiguration />} />
         <Route path="/game" element={<Game />}>
           <Route path="panels" element={<PanelGame />} />
