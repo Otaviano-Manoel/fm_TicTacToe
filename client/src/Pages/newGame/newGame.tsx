@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import styled from './newgame.module.scss';
 import logo from '../../assets/images/logo.svg';
 import classNames from 'classnames';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useGameManager } from '../../context/GameManager';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import { getDefaultGameManager, IGameManager } from '../../interface/IGameManager';
@@ -10,7 +10,6 @@ import { useSocket } from '../../context/Socket';
 
 function NewGame() {
     const socket = useSocket();
-    const navigate = useNavigate();
     const { gameManager, setGameManager } = useGameManager();
     const controllerManager = new ControllerGameManager(gameManager);
 
@@ -73,8 +72,6 @@ function NewGame() {
                 else if (gameManager.server.client) {
                     socket.emit('exitRoom', gameManager.server.code);
                 }
-
-                console.log(gameManager)
             }
         } else if (value === 'multiplayer') {
             setGameManager(

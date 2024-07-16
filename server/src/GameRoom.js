@@ -10,6 +10,7 @@ class GameRoom {
             throw new Error('Player2 already in the room');
         }
         this.player2 = player2;
+        return '';
     }
 
     removePlayer2() {
@@ -17,6 +18,7 @@ class GameRoom {
             throw new Error('Player not found in the room');
         }
         this.player2 = null;
+        return '';
     }
 
     isFull() {

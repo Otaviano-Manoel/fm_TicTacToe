@@ -1,10 +1,6 @@
 const GameRoom = require('./GameRoom');
 
 const generateUniqueCode = (existingCodes) => {
-    const maxRooms = 50; // Máximo de salas permitidas
-    if (existingCodes.size >= maxRooms) {
-        throw new Error('Maximum number of rooms reached');
-    }
     let code;
 
     do {
@@ -19,15 +15,10 @@ class GameRoomsManager {
     }
 
     createRoom(player1) {
-        try {
-            const id = generateUniqueCode(this.rooms);
-            const newRoom = new GameRoom(id, player1);
-            this.rooms.set(id, newRoom);
-            return newRoom;
-        } catch (error) {
-            console.error(error.message);
-            return null;
-        }
+        const id = generateUniqueCode(this.rooms);
+        const newRoom = new GameRoom(id, player1);
+        this.rooms.set(id, newRoom);
+        return newRoom;
     }
 
     getRoom(id) {
@@ -40,14 +31,10 @@ class GameRoomsManager {
     }
 
     deleteRoom(id) {
-        try {
-            if (!this.rooms.has(id)) {
-                throw new Error('Room not found');
-            }
-            this.rooms.delete(id);
-        } catch (error) {
-            console.log(error.message);
+        if (!this.rooms.has(id)) {
+            throw new Error('Room not found');
         }
+        this.rooms.delete(id);
     }
 
     listRooms() {

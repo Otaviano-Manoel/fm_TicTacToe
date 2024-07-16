@@ -3,6 +3,8 @@ import { io, Socket } from 'socket.io-client';
 import { useGameManager } from './GameManager';
 import ControllerGameManager from '../utils/GameMangerUtils';
 import { useNavigate } from 'react-router-dom';
+import { useGameBoard } from './GameBoardContext';
+import { getDefaultIGameBoard } from '../interface/IGameBoard';
 
 const socketContext = createContext<Socket | null>(null);
 
@@ -17,6 +19,7 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
     const socketRef = useRef<Socket | null>(null);
     const { gameManager, setGameManager } = useGameManager();
+    const { gameBoard, setGameBoard } = useGameBoard();
 
     if (!socketRef.current) {
         socketRef.current = io('http://localhost:8080', {
@@ -80,6 +83,25 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.move'], [move], gameManager));
         });
 
+        socket?.on('nextGame', (url) => {
+            if (url !== '') {
+                navigate(url);
+            }
+            const newGame = getDefaultIGameBoard();
+            newGame.numberWins.o = gameBoard.numberWins.o;
+            newGame.numberWins.ties = gameBoard.numberWins.ties;
+            newGame.numberWins.x = gameBoard.numberWins.x;
+            setGameBoard(newGame);
+        });
+
+        socket?.on('quitGame', (url) => {
+            navigate(url);
+        });
+
+        socket?.on('error', (message) => {
+            window.alert(message);
+        });
+
         // Limpeza quando o componente é desmontado
         return () => {
             socket!.off('connect');
@@ -90,6 +112,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             socket!.off('playerExit');
             socket!.off('startGame');
             socket!.off('move');
+            socket!.off('nextGame');
+            socket!.off('quitGame');
+            socket!.off('error');
         };
     }, [gameManager, navigate, setGameManager]);
 

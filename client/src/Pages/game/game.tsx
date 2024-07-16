@@ -53,6 +53,28 @@ function Game() {
         return classNames(gameBoard.fields[i].styled);
     }, [gameBoard]);
 
+    const getTextPost = useCallback(() => {
+        let post = {
+            x: '',
+            o: ''
+        }
+        if (gameManager.game.type === 'solo') {
+            post = {
+                x: gameManager.game.player1.mark ? 'YOU' : 'CPU',
+                o: !gameManager.game.player1.mark ? 'YOU' : 'CPU'
+            }
+        }
+
+        if (gameManager.game.type === 'multiplayer') {
+            post = {
+                x: gameManager.game.player1.mark ? 'P1' : 'P2',
+                o: !gameManager.game.player1.mark ? 'P1' : 'P2'
+            }
+        }
+
+        return post;
+    }, [gameManager]);
+
     // Generate class names for fields
     const getClassField = useCallback((i: number) => {
         return classNames(styled.field, gameBoard.fields[i].winner ?
@@ -170,13 +192,13 @@ function Game() {
 
             <div className={styled.footer}>
                 <div className={styled.x}>
-                    <p>X ({gameManager.game.player1.mark ? 'YOU' : 'CPU'})<span className={styled.wins}>{gameBoard.numberWins.x}</span></p>
+                    <p>X ({getTextPost().x})<span className={styled.wins}>{gameBoard.numberWins.x}</span></p>
                 </div>
                 <div className={styled.ties}>
                     <p>TIES<span className={styled.wins}>{gameBoard.numberWins.ties}</span></p>
                 </div>
                 <div className={styled.o}>
-                    <p>O ({gameManager.game.player1.mark ? 'CPU' : 'YOU'})<span className={styled.wins}>{gameBoard.numberWins.o}</span></p>
+                    <p>O ({getTextPost().o})<span className={styled.wins}>{gameBoard.numberWins.o}</span></p>
                 </div>
             </div>
             <Outlet />

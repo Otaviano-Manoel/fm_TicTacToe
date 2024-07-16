@@ -19,58 +19,117 @@ io.on('connection', (socket) => {
     console.log('Um cliente se conectou');
 
     socket.on('createRoom', () => {
-        const room = roomsManager.createRoom(socket);
-        socket.emit('createdRoom', room.id);
-        console.log(`Sala criada:`, room.id);
+        try {
+            const room = roomsManager.createRoom(socket);
+            socket.emit('createdRoom', room.id);
+            console.log(`Sala criada:`, room.id);
+        } catch (error) {
+            socket.emit('error', error.message);
+        }
     });
 
     socket.on('closeRoom', (code) => {
-        if (roomsManager.getRoom(code).getPlayers().player2) {
-            roomsManager.getRoom(code).getPlayers().player2.emit('exitRoom');
+        try {
+            console.log(code);
+            if (roomsManager.getRoom(code).getPlayers().player2) {
+                roomsManager
+                    .getRoom(code)
+                    .getPlayers()
+                    .player2.emit('exitRoom');
+            }
+            console.log('estou aqui');
+            roomsManager.getRoom(code).getPlayers().player1.emit('closedRoom');
+            console.log('estou aq');
+            roomsManager.deleteRoom(code);
+            console.log('estou');
+            console.log(
+                `Sala fechada:`,
+                roomsManager.listRooms().map((x) => x.id)
+            );
+        } catch (error) {
+            socket.emit('error', error.message);
         }
-        roomsManager.getRoom(code).getPlayers().player1.emit('closedRoom');
-        roomsManager.deleteRoom(code);
-        console.log(
-            `Sala fechada:`,
-            roomsManager.listRooms().map((x) => x.id)
-        );
     });
 
     socket.on('enterRoom', (code) => {
-        if (roomsManager.getRoom(code).isFull()) {
-            socket.emit('enterRoom', false, code);
-            return;
+        try {
+            if (roomsManager.getRoom(code).isFull()) {
+                socket.emit('enterRoom', false, code);
+                return;
+            }
+            let error = roomsManager.getRoom(code).toString();
+            if (error === 'Room not found or invalid type') {
+            }
+
+            error = roomsManager.getRoom(code).addPlayer2(socket);
+            roomsManager.getRoom(code).getPlayers().player1.emit('playerEnter');
+            roomsManager
+                .getRoom(code)
+                .getPlayers()
+                .player2.emit('enterRoom', true, code);
+            console.log('Um jogador entrou na sala');
+        } catch (error) {
+            socket.emit('error', error.message);
         }
-        roomsManager.getRoom(code).addPlayer2(socket);
-        roomsManager.getRoom(code).getPlayers().player1.emit('playerEnter');
-        roomsManager
-            .getRoom(code)
-            .getPlayers()
-            .player2.emit('enterRoom', true, code);
-        console.log('Um jogador entrou na sala');
     });
     socket.on('exitRoom', (code) => {
-        roomsManager.getRoom(code).getPlayers().player2.emit('exitRoom');
-        roomsManager.getRoom(code).removePlayer2();
-        roomsManager.getRoom(code).getPlayers().player1.emit('playerExit');
-        console.log('O jogador 2 saiu da sala.');
+        try {
+            roomsManager.getRoom(code).getPlayers().player2.emit('exitRoom');
+            roomsManager.getRoom(code).removePlayer2();
+            roomsManager.getRoom(code).getPlayers().player1.emit('playerExit');
+            console.log('O jogador 2 saiu da sala.');
+        } catch (error) {
+            socket.emit('error', error.message);
+        }
     });
 
     socket.on('startGame', (code, mark) => {
-        const players = roomsManager.getRoom(code).getPlayers();
-        if (roomsManager.getRoom(code).isFull()) {
-            players.player1.emit('startGame', true, mark);
-            players.player2.emit('startGame', true, mark);
-        } else {
-            players.player1.emit('startGame', false, mark);
+        try {
+            const players = roomsManager.getRoom(code).getPlayers();
+            if (roomsManager.getRoom(code).isFull()) {
+                players.player1.emit('startGame', true, mark);
+                players.player2.emit('startGame', true, mark);
+            } else {
+                players.player1.emit('startGame', false, mark);
+            }
+        } catch (error) {
+            socket.emit('error', error.message);
         }
     });
 
     socket.on('move', (code, move, isPlayer1) => {
-        if (isPlayer1) {
-            roomsManager.getRoom(code).getPlayers().player2.emit('move', move);
-        } else {
-            roomsManager.getRoom(code).getPlayers().player1.emit('move', move);
+        try {
+            if (isPlayer1) {
+                roomsManager
+                    .getRoom(code)
+                    .getPlayers()
+                    .player2.emit('move', move);
+            } else {
+                roomsManager
+                    .getRoom(code)
+                    .getPlayers()
+                    .player1.emit('move', move);
+            }
+        } catch (error) {
+            socket.emit('error', error.message);
+        }
+    });
+
+    socket.on('nextGame', (code, navigate) => {
+        try {
+            const players = roomsManager.getRoom(code).getPlayers();
+            players.player2.emit('nextGame', navigate);
+        } catch (error) {
+            socket.emit('error', error.message);
+        }
+    });
+
+    socket.on('quitGame', (code, navigate) => {
+        try {
+            const players = roomsManager.getRoom(code).getPlayers();
+            players.player2.emit('quitGame', navigate);
+        } catch (error) {
+            socket.emit('error', error.message);
         }
     });
 
