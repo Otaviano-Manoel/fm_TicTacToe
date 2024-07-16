@@ -3,7 +3,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import styled from './app.module.scss';
 import { useGameManager } from '../context/GameManager';
 import { useGameBoard } from '../context/GameBoardContext';
-import NewGame from './NewGame';
+import NewGame from './NewGame/NewGame';
 import PanelGame from './Game/Panels/PanelGame';
 import ServerConfiguration from './ServerConfiguration';
 import { getDefaultIGameBoard } from '../interface/IGameBoard';
