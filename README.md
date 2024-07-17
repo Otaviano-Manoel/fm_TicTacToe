@@ -15,6 +15,7 @@ You can use any tools you like to help you complete the challenge. So if you've 
     -   [What I Learned](#what-i-learned)
     -   [Continued Development](#continued-development)
     -   [Useful Resources](#useful-resources)
+    -   [Useful Resources](#credits)
 -   [Author](#author)
 -   [Acknowledgments](#acknowledgments)
 
