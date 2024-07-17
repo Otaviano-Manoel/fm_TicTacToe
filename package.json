@@ -1,12 +1,13 @@
 {
     "name": "tic_tac_toe",
-    "version": "1.2.0",
+    "version": "2.4.0",
     "private": true,
     "scripts": {
         "start": "concurrently \"npm run server\" \"npm run client\"",
         "server": "cd server && npm start",
         "client": "cd client && npm start",
         "build": "cd client && npm run build",
+        "deploy": "cd client && npm run deploy",
         "install-all": "npm install && cd client && npm install && cd ../server && npm install"
     },
     "dependencies": {

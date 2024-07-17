@@ -31,8 +31,7 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "server": "node src/server/server.js"
+        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "extends": [
@@ -53,6 +52,7 @@
         ]
     },
     "devDependencies": {
-        "classnames": "^2.5.1"
+        "classnames": "^2.5.1",
+        "gh-pages": "^6.1.1"
     }
 }
