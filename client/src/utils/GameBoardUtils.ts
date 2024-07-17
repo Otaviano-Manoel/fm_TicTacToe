@@ -1,44 +1,30 @@
 import { IGameBoard } from '../interface/IGameBoard';
 
-class ControllerGameBoard {
-    private state: IGameBoard;
+export const updateValueGameBoard = <T extends IGameBoard>(
+    gameBoard: T,
+    keyPath: string,
+    newValue: any
+): T => {
+    const keys = keyPath.split('.') as (keyof T)[];
+    const newGameBoard = { ...gameBoard };
 
-    constructor(initialState: IGameBoard) {
-        this.state = initialState;
-    }
-
-    public updateValues = <T extends IGameBoard>(
-        obj: T,
-        keyPath: string,
-        value: any
-    ): IGameBoard => {
-        const keys = keyPath.split('.') as (keyof any)[];
-        const newState = { ...obj };
-
-        let current: any = newState;
-        keys.slice(0, -1).forEach((key) => {
-            if (current[key] === undefined) {
-                throw new Error(
-                    `Key "${key.toString()}" does not exist in the object.`
-                );
-            }
-            current = current[key];
-        });
-
-        const finalKey = keys[keys.length - 1];
-        if (current[finalKey] === undefined) {
+    let current: any = newGameBoard;
+    keys.slice(0, -1).forEach((key) => {
+        if (current[key] === undefined) {
             throw new Error(
-                `Key "${finalKey.toString()}" does not exist in the object.`
+                `Key "${key.toString()}" does not exist in the object.`
             );
         }
-        current[finalKey] = value;
+        current = current[key];
+    });
 
-        return newState;
-    };
-
-    public getstate(): IGameBoard {
-        return this.state;
+    const finalKey = keys[keys.length - 1];
+    if (current[finalKey] === undefined) {
+        throw new Error(
+            `Key "${finalKey.toString()}" does not exist in the object.`
+        );
     }
-}
+    current[finalKey] = newValue;
 
-export default ControllerGameBoard;
+    return newGameBoard;
+};

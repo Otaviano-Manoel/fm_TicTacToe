@@ -36,7 +36,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         const socket = socketRef.current;
 
         socket!.on('connect', () => {
-            console.log('Conectado ao servidor Socket.IO');
+            console.log('Connected to Socket.IO server');
             if (gameManager.server.code !== null) {
                 socket?.emit('reconnect', gameManager.server.code, gameManager.server.host)
             }
@@ -44,47 +44,45 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         });
 
         socket!.on('disconnect', () => {
-            console.log('Desconectado do servidor Socket.IO');
+            console.log('Disconnected from Socket.IO server');
         });
 
-        // Adicione outros eventos de socket aqui
         socket!.on('createdRoom', (roomId: string) => {
-            console.log(`Sala criada com ID: ${roomId}`);
-            setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.code', 'server.host'], [roomId, true], gameManager));
+            console.log(`Room created with ID: ${roomId}`);
+            setGameManager(ControllerGameManager.updateValues(['server.code', 'server.host'], [roomId, true], gameManager));
         });
         socket?.on('closedRoom', () => {
-            console.log('A sala fechou');
-            setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.host', 'server.code'], [false, null], gameManager));
+            console.log('The room closed');
+            setGameManager(ControllerGameManager.updateValues(['server.host', 'server.code'], [false, null], gameManager));
         });
 
         socket?.on('enterRoom', (isEnter, id) => {
             if (!isEnter) {
-                console.log('Sala cheia:', id);
+                console.log('Room full:', id);
                 return;
             };
-            setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.code'], [id], gameManager));
+            setGameManager(ControllerGameManager.updateValues(['server.code'], [id], gameManager));
         });
 
         socket?.on('exitRoom', () => {
-            setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.code'], [null], gameManager));
+            setGameManager(ControllerGameManager.updateValues(['server.code'], [null], gameManager));
         });
         socket?.on('playerExit', () => {
-            console.log('o jogador saiu,');
+            console.log('The player left');
         });
 
         socket?.on('startGame', (isStartGame, mark) => {
             if (isStartGame) {
-                setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['game.player2.mark'], [mark], gameManager));
+                setGameManager(ControllerGameManager.updateValues(['game.player2.mark'], [mark], gameManager));
                 navigate('/game');
-                console.log(gameManager)
             }
             else {
-                console.log('falta um jogador');
+                console.log('One player missing');
             }
         });
 
         socket?.on('move', (move) => {
-            setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.move'], [move], gameManager));
+            setGameManager(ControllerGameManager.updateValues(['server.move'], [move], gameManager));
         });
 
         socket?.on('nextGame', (url) => {
@@ -120,6 +118,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             socket!.off('quitGame');
             socket!.off('error');
         };
+        // eslint-disable-next-line
     }, [gameManager, navigate, setGameManager]);
 
     return (

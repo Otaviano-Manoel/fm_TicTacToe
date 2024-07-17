@@ -16,13 +16,13 @@ const PORT = 8080;
 const roomsManager = new GameRoomsManager();
 
 io.on('connection', (socket) => {
-    console.log('Um cliente se conectou');
+    console.log('A client connected');
 
     socket.on('createRoom', () => {
         try {
             const room = roomsManager.createRoom(socket);
             socket.emit('createdRoom', room.id);
-            console.log(`Sala criada:`, room.id);
+            console.log(`Room created:`, room.id);
         } catch (error) {
             socket.emit('error', error.message);
         }
@@ -30,20 +30,16 @@ io.on('connection', (socket) => {
 
     socket.on('closeRoom', (code) => {
         try {
-            console.log(code);
             if (roomsManager.getRoom(code).getPlayers().player2) {
                 roomsManager
                     .getRoom(code)
                     .getPlayers()
                     .player2.emit('exitRoom');
             }
-            console.log('estou aqui');
             roomsManager.getRoom(code).getPlayers().player1.emit('closedRoom');
-            console.log('estou aq');
             roomsManager.deleteRoom(code);
-            console.log('estou');
             console.log(
-                `Sala fechada:`,
+                `Room closed:`,
                 roomsManager.listRooms().map((x) => x.id)
             );
         } catch (error) {
@@ -67,7 +63,7 @@ io.on('connection', (socket) => {
                 .getRoom(code)
                 .getPlayers()
                 .player2.emit('enterRoom', true, code);
-            console.log('Um jogador entrou na sala');
+            console.log('A player joined the room');
         } catch (error) {
             socket.emit('error', error.message);
         }
@@ -77,7 +73,7 @@ io.on('connection', (socket) => {
             roomsManager.getRoom(code).getPlayers().player2.emit('exitRoom');
             roomsManager.getRoom(code).removePlayer2();
             roomsManager.getRoom(code).getPlayers().player1.emit('playerExit');
-            console.log('O jogador 2 saiu da sala.');
+            console.log('Player 2 left the room');
         } catch (error) {
             socket.emit('error', error.message);
         }
@@ -141,25 +137,17 @@ io.on('connection', (socket) => {
             } else {
                 room.player2 = socket;
             }
-            console.log(
-                `Sala fechada:`,
-                roomsManager.listRooms().map((x) => x.id)
-            );
-            console.log('reconectado a sala.');
+            console.log('Reconnected to the room');
         } catch (error) {
-            console.log(
-                `Sala fechada:`,
-                roomsManager.listRooms().map((x) => x.id)
-            );
             socket.emit('error', error.message);
         }
     });
 
     socket.on('disconnect', () => {
-        console.log('Um cliente desconectado');
+        console.log('A client disconnected');
     });
 });
 
 server.listen(PORT, () => {
-    console.log(`Servidor Socket.IO está rodando na porta ${PORT}`);
+    console.log(`Socket.IO server is running on port ${PORT}`);
 });

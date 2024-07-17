@@ -4,19 +4,18 @@ import logo from '../../assets/images/logo.svg';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useGameManager } from '../../context/GameManager';
-import ControllerGameManager from '../../utils/GameMangerUtils';
 import { getDefaultGameManager, IGameManager } from '../../interface/IGameManager';
 import { useSocket } from '../../context/Socket';
 import ActiveSound from '../../utils/soundActive';
+import ControllerGameManager from '../../utils/GameMangerUtils';
 
 function NewGame() {
     const socket = useSocket();
     const { gameManager, setGameManager } = useGameManager();
-    const controllerManager = new ControllerGameManager(gameManager);
 
     useEffect(() => {
         const resetGame: IGameManager = getDefaultGameManager();
-        setGameManager(controllerManager.updateValuesArray(
+        setGameManager(ControllerGameManager.updateValues(
             ['game.player1', 'game.player2'/*, 'server'*/, 'sound.play'],
             [gameManager.game.player1, gameManager.game.player2/*, gameManager.server*/, gameManager.sound.play],
             resetGame
@@ -53,7 +52,7 @@ function NewGame() {
     const handlerSelectMark = (x: boolean) => {
         ActiveSound.click(gameManager, setGameManager);
         setGameManager(
-            controllerManager.updateValuesArray(['game.player1.mark'], [x], gameManager)
+            ControllerGameManager.updateValues(['game.player1.mark'], [x], gameManager)
         );
     };
 
@@ -61,7 +60,7 @@ function NewGame() {
         ActiveSound.click(gameManager, setGameManager);
         if (value === 'solo') {
             setGameManager(
-                controllerManager.updateValuesArray(
+                ControllerGameManager.updateValues(
                     ['game.player2.playerType', 'game.type'],
                     ['cpu', value], gameManager)
             );
@@ -76,7 +75,7 @@ function NewGame() {
             }
         } else if (value === 'multiplayer') {
             setGameManager(
-                controllerManager.updateValuesArray(
+                ControllerGameManager.updateValues(
                     ['game.player2.playerType', 'game.type'],
                     ['user', value], gameManager)
             );

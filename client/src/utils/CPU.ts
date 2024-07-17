@@ -2,11 +2,11 @@ import { IGameBoard } from '../interface/IGameBoard';
 
 class CPU {
     private board: (boolean | null)[] = [];
-    private mark: boolean = false;
+    private cpuMark: boolean; // true = x && false = o (tictactoe)
 
-    constructor(gameBoard: IGameBoard, markCPU: boolean) {
+    constructor(gameBoard: IGameBoard, cpuMark: boolean) {
         this.board = gameBoard.fields.map((x) => x.mark);
-        this.mark = markCPU;
+        this.cpuMark = cpuMark;
     }
 
     public findBestMove(): number {
@@ -15,10 +15,14 @@ class CPU {
 
         for (let index = 0; index < this.board.length; index++) {
             if (this.board[index] === null) {
-                this.board[index] = false; // Supomos que false é a marca da CPU
-                let moveVal = this.minimax(0, this.mark);
-                this.board[index] = null; // Reverte a jogada
+                // Make the move
+                this.board[index] = this.cpuMark;
+                // Compute evaluation function for this move
+                let moveVal = this.minimax(0, false);
+                // Undo the move
+                this.board[index] = null;
 
+                // If the value of the current move is more than the best value, update best
                 if (moveVal > bestVal) {
                     bestMove = index;
                     bestVal = moveVal;
@@ -29,32 +33,43 @@ class CPU {
         return bestMove;
     }
 
-    private minimax(depth: number, isMax: boolean): number {
+    private minimax(depth: number, isMaximizing: boolean): number {
         const score = this.evaluate();
+
+        // If Maximizer has won the game, return evaluated score
         if (score === 10) return score - depth;
+        // If Minimizer has won the game, return evaluated score
         if (score === -10) return score + depth;
+        // If there are no more moves and no winner, then it is a tie
         if (this.board.every((e) => e !== null)) return 0;
 
-        if (isMax) {
+        if (isMaximizing) {
             let best = -Infinity;
 
+            // Traverse all cells
             for (let index = 0; index < this.board.length; index++) {
                 if (this.board[index] === null) {
-                    this.board[index] = false;
-                    best = Math.max(best, this.minimax(depth + 1, !isMax));
-                    this.board[index] = null; // Reverte a jogada
+                    // Make the move
+                    this.board[index] = this.cpuMark;
+                    // Call minimax recursively and choose the maximum value
+                    best = Math.max(best, this.minimax(depth + 1, false));
+                    // Undo the move
+                    this.board[index] = null;
                 }
             }
-
             return best;
         } else {
             let best = Infinity;
 
+            // Traverse all cells
             for (let index = 0; index < this.board.length; index++) {
                 if (this.board[index] === null) {
-                    this.board[index] = true;
-                    best = Math.min(best, this.minimax(depth + 1, !isMax));
-                    this.board[index] = null; // Reverte a jogada
+                    // Make the move
+                    this.board[index] = !this.cpuMark;
+                    // Call minimax recursively and choose the minimum value
+                    best = Math.min(best, this.minimax(depth + 1, true));
+                    // Undo the move
+                    this.board[index] = null;
                 }
             }
             return best;
@@ -62,7 +77,7 @@ class CPU {
     }
 
     private evaluate(): number {
-        const sequenceWinner = [
+        const winningSequences = [
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
@@ -73,19 +88,13 @@ class CPU {
             [2, 4, 6],
         ];
 
-        for (const [a, b, c] of sequenceWinner) {
+        for (const [a, b, c] of winningSequences) {
             if (
                 this.board[a] !== null &&
                 this.board[a] === this.board[b] &&
                 this.board[a] === this.board[c]
             ) {
-                return this.board[a] === false
-                    ? /* Metodo nivel impossivel*/
-                      10
-                    : -10;
-                /* Metodo nivel baixo
-                      Math.round(Math.random()) * 10
-                    : -Math.round(Math.random()) * 10;*/
+                return this.board[a] === this.cpuMark ? 10 : -10;
             }
         }
         return 0;

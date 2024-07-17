@@ -8,11 +8,7 @@ export default class ActiveSound {
         setManger: Dispatch<SetStateAction<IGameManager>>
     ) {
         setManger(
-            new ControllerGameManager(manager).updateValuesArray(
-                ['sound.click'],
-                [true],
-                manager
-            )
+            ControllerGameManager.updateValues(['sound.click'], [true], manager)
         );
     }
     static win(
@@ -20,11 +16,7 @@ export default class ActiveSound {
         setManger: Dispatch<SetStateAction<IGameManager>>
     ) {
         setManger(
-            new ControllerGameManager(manager).updateValuesArray(
-                ['sound.win'],
-                [true],
-                manager
-            )
+            ControllerGameManager.updateValues(['sound.win'], [true], manager)
         );
     }
     static lose(
@@ -32,11 +24,7 @@ export default class ActiveSound {
         setManger: Dispatch<SetStateAction<IGameManager>>
     ) {
         setManger(
-            new ControllerGameManager(manager).updateValuesArray(
-                ['sound.lose'],
-                [true],
-                manager
-            )
+            ControllerGameManager.updateValues(['sound.lose'], [true], manager)
         );
     }
     static draw(
@@ -44,11 +32,7 @@ export default class ActiveSound {
         setManger: Dispatch<SetStateAction<IGameManager>>
     ) {
         setManger(
-            new ControllerGameManager(manager).updateValuesArray(
-                ['sound.draw'],
-                [true],
-                manager
-            )
+            ControllerGameManager.updateValues(['sound.draw'], [true], manager)
         );
     }
 }

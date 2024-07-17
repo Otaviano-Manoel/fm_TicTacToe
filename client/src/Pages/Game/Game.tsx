@@ -6,21 +6,20 @@ import logo from '../../assets/images/logo.svg';
 import restart from '../../assets/images/icon-restart.svg';
 import { useGameManager } from '../../context/GameManager';
 import { useGameBoard } from '../../context/GameBoardContext';
-import ControllerGameBoard from '../../utils/GameBoardUtils';
 import { calculateWinner } from '../../utils/GameUtils';
 import CPU from '../../utils/CPU';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import { useSocket } from '../../context/Socket';
 import ActiveSound from '../../utils/soundActive';
+import { updateValueGameBoard } from '../../utils/GameBoardUtils';
 
 function Game() {
     const { gameManager, setGameManager } = useGameManager();
     const { gameBoard, setGameBoard } = useGameBoard();
     const navigate = useNavigate();
     const socket = useSocket();
-    const controller = new ControllerGameBoard(gameBoard);
 
-    // Handle CPU move in solo game
+
     useEffect(() => {
         if (gameManager.game.type === 'solo') {
             const move = moveCPU();
@@ -31,7 +30,7 @@ function Game() {
         else if (gameManager.game.type === 'multiplayer') {
             if (gameManager.server.move !== null) {
                 let move = gameManager.server.move;
-                setGameManager(new ControllerGameManager(gameManager).updateValuesArray(['server.move'], [null], gameManager));
+                setGameManager(ControllerGameManager.updateValues(['server.move'], [null], gameManager));
                 selectField(move);
             }
         }
@@ -41,7 +40,7 @@ function Game() {
     // Initialize game state
     useEffect(() => {
         if (!gameBoard.startGame) {
-            setGameBoard(controller.updateValues(gameBoard, 'startGame', true));
+            setGameBoard(updateValueGameBoard(gameBoard, 'startGame', true));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -114,7 +113,7 @@ function Game() {
     const selectField = (i: number): boolean => {
         ActiveSound.click(gameManager, setGameManager);
         if (!gameBoard.fields[i].marked) {
-            const updateBoard = controller.updateValues(gameBoard, `fields.${i}.marked`, true);
+            const updateBoard = updateValueGameBoard(gameBoard, `fields.${i}.marked`, true);
             updateBoard.fields[i].mark = updateBoard.turn;
             updateBoard.fields[i].styled = classNames(updateBoard.turn ? styled['x'] : styled['o']);
 
@@ -134,7 +133,6 @@ function Game() {
                     } else {
                         updateBoard.numberWins.o++;
                     }
-                    console.log(gameManager)
                     if (gameManager.game.type === 'solo') {
                         if (gameManager.game.player1.mark === updateBoard.markWinner) {
                             ActiveSound.win(gameManager, setGameManager);

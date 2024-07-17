@@ -2,6 +2,8 @@ import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, 
 import PropTypes from 'prop-types';
 import { getDefaultIGameBoard, IGameBoard } from '../interface/IGameBoard';
 
+const LOCAL_GAME_BOARD = 'LOCAL_GAME_BOARD';
+
 const GameBoardContext = createContext<{ gameBoard: IGameBoard, setGameBoard: Dispatch<SetStateAction<IGameBoard>> } | undefined>(undefined);
 
 export const useGameBoard = () => {
@@ -19,7 +21,7 @@ interface GameBoardProps {
 function GameBoard(props: GameBoardProps) {
 
     const [gameBoard, setGameBoard] = useState<IGameBoard>(() => {
-        const local = localStorage.getItem('LOCAL_GAME_BOARD');
+        const local = localStorage.getItem(LOCAL_GAME_BOARD);
         if (!local) {
             return getDefaultIGameBoard();
         }
@@ -28,7 +30,7 @@ function GameBoard(props: GameBoardProps) {
     });
 
     useEffect(() => {
-        localStorage.setItem('LOCAL_GAME_BOARD', JSON.stringify(gameBoard));
+        localStorage.setItem(LOCAL_GAME_BOARD, JSON.stringify(gameBoard));
     }, [gameBoard])
 
     return (

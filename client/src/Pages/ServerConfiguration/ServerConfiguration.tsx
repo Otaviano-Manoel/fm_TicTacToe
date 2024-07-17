@@ -7,7 +7,7 @@ import { useSocket } from '../../context/Socket';
 
 function ServerConfiguration() {
     const { gameManager, setGameManager } = useGameManager();
-    const controller = new ControllerGameManager(gameManager);
+    const controller = ControllerGameManager;
     const socket = useSocket();
     const [inputValue, setInputValue] = useState('');
 
@@ -66,7 +66,7 @@ function ServerConfiguration() {
     // Handler to set the server as client and manage disconnection
     const handlerClient = () => {
         if (gameManager.server.code !== null) return;
-        setGameManager(controller.updateValuesArray(['server.client'], [true], gameManager));
+        setGameManager(controller.updateValues(['server.client'], [true], gameManager));
     };
 
     // Handler to connect or disconnect based on the option
@@ -78,18 +78,15 @@ function ServerConfiguration() {
             else if (gameManager.server.client) {
                 socket.emit('exitRoom', gameManager.server.code);
             }
-            console.log('Disconnect from server and reset server values.');
         }
 
         if (gameManager.server.client && opt === 'connect') {
             socket.emit('enterRoom', inputValue);
-            console.log('Connect the client to server and room.');
         }
     };
 
     // Handler to start the game
     const handlerStartGame = () => {
-        console.log('Start the game.');
         socket.emit('startGame', gameManager.server.code, gameManager.game.player2.mark);
     };
 

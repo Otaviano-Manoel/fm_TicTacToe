@@ -1,8 +1,8 @@
 import { IGameBoard } from '../interface/IGameBoard';
 
 export const calculateWinner = (gameBoard: IGameBoard) => {
-    const getMarkedBoard = gameBoard.fields.map((x) => x.mark);
-    const sequenceWinner = [
+    const markedBoard = gameBoard.fields.map((field) => field.mark);
+    const winningCombinations = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -13,27 +13,17 @@ export const calculateWinner = (gameBoard: IGameBoard) => {
         [2, 4, 6],
     ];
 
-    const sequence: [number[]] = [[]];
-    let isSequence = false;
+    const sequences: number[][] = [];
 
-    for (const [a, b, c] of sequenceWinner) {
+    for (const [a, b, c] of winningCombinations) {
         if (
-            getMarkedBoard[a] !== null &&
-            getMarkedBoard[b] !== null &&
-            getMarkedBoard[c] !== null
+            markedBoard[a] !== null &&
+            markedBoard[a] === markedBoard[b] &&
+            markedBoard[a] === markedBoard[c]
         ) {
-            if (
-                (getMarkedBoard[a] && getMarkedBoard[b] && getMarkedBoard[c]) ||
-                (!getMarkedBoard[a] && !getMarkedBoard[b] && !getMarkedBoard[c])
-            ) {
-                isSequence = true;
-                sequence.push([a, b, c]);
-            }
+            sequences.push([a, b, c]);
         }
     }
-    if (isSequence) {
-        return sequence;
-    } else {
-        return undefined;
-    }
+
+    return sequences.length > 0 ? sequences : undefined;
 };
