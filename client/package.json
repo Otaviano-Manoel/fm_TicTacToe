@@ -1,6 +1,6 @@
 {
     "name": "tic_tac_toe-client",
-    "version": "2.2.0",
+    "version": "2.4.0",
     "private": true,
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.6.0",
