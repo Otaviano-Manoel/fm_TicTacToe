@@ -114,7 +114,7 @@ This project has been an intense learning journey, filled with challenges and ac
 ### Sound Title: "Finger Snap"
 
 -   Author: [DRFX](https://freesound.org/people/DRFX/)
--   License: [Creative Commons Attribution License (CC BY-NC 4.0)](http://creativecommons.org/publicdomain/zero/1.0/)
+-   License: [Creative Commons Attribution License (CC0)](http://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Author
 
