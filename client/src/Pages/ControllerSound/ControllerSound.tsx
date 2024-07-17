@@ -90,7 +90,7 @@ function ControllerSound() {
 
     return (
         <div className={styled.sound}>
-            <button className={getClassName().button} onClick={handleButtonClick} type="button">
+            <button className={getClassName().button} aria-label='Activate or deactivate the sound' onClick={handleButtonClick} type="button">
                 <FontAwesomeIcon icon={faVolumeUp} />
                 <div className={getClassName().line}></div>
             </button>

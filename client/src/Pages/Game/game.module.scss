@@ -49,7 +49,9 @@
             }
 
             .mark {
+                -webkit-mask-repeat: no-repeat;
                 mask-repeat: no-repeat;
+                -webkit-mask-size: cover;
                 mask-size: cover;
                 width: 20px;
                 height: 20px;
@@ -66,10 +68,12 @@
             }
 
             .x {
+                -webkit-mask-image: url('../../assets/images/icon-x.svg');
                 mask-image: url('../../assets/images/icon-x.svg');
             }
 
             .o {
+                -webkit-mask-image: url('../../assets/images/icon-o.svg');
                 mask-image: url('../../assets/images/icon-o.svg');
             }
 
@@ -137,28 +141,35 @@
 
             div {
                 mask-repeat: no-repeat;
+                -webkit-mask-repeat: no-repeat;
+                -webkit-mask-size: 64px;
                 mask-size: 64px;
+                -webkit-mask-position: center;
                 mask-position: center;
                 width: 100%;
                 height: 100%;
             }
 
             .o {
+                -webkit-mask-image: url('../../assets/images/icon-o.svg');
                 mask-image: url('../../assets/images/icon-o.svg');
                 background-color: $light-yellow;
             }
 
             .outiline-o:hover {
+                -webkit-mask-image: url('../../assets/images/icon-o-outline.svg');
                 mask-image: url('../../assets/images/icon-o-outline.svg');
                 background-color: $light-yellow;
             }
 
             .x {
+                -webkit-mask-image: url('../../assets/images/icon-x.svg');
                 mask-image: url('../../assets/images/icon-x.svg');
                 background-color: $light-blue;
             }
 
             .outiline-x:hover {
+                -webkit-mask-image: url('../../assets/images/icon-x-outline.svg');
                 mask-image: url('../../assets/images/icon-x-outline.svg');
                 background-color: $light-blue;
             }
@@ -176,6 +187,7 @@
 
                 .o,
                 .x {
+                    -webkit-mask-size: 40px;
                     mask-size: 40px;
                 }
             }

@@ -37,8 +37,11 @@
         .line {
             visibility: hidden;
             position: absolute;
+            -webkit-mask-image: url('../../assets/images/icon-x.svg');
             mask-image: url('../../assets/images/icon-x.svg');
+            -webkit-mask-size: cover;
             mask-size: cover;
+            -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
 
             width: 100%;

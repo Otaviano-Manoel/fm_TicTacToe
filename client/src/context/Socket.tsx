@@ -22,7 +22,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     const { gameBoard, setGameBoard } = useGameBoard();
 
     if (!socketRef.current) {
-        socketRef.current = io('http://localhost:8080', {
+        socketRef.current = io('https://tic-tac-toe-server-k014.onrender.com', {
             reconnection: true,
             reconnectionAttempts: Infinity, // Tentativas de reconexão infinitas
             reconnectionDelay: 1000, // Tempo entre as tentativas de reconexão (em ms)
