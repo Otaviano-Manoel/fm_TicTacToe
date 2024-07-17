@@ -83,25 +83,20 @@ function Game() {
 
     // Handle field click event
     const handlerOnClick = (i: number) => {
-        console.log('opi');
         if (gameManager.game.type === 'solo') {
             if (gameManager.game.player1.mark !== gameBoard.turn) {
                 return;
             }
             if (!selectField(i)) return;
         }
-        console.log('op');
         if (gameManager.game.type === 'multiplayer') {
-            console.log('o');
             if (gameManager.server.host) {
                 if (gameManager.game.player1.mark !== gameBoard.turn) {
-                    console.log('a');
                     return;
                 }
             }
             else if (gameManager.server.client) {
                 if (gameManager.game.player2.mark !== gameBoard.turn) {
-                    console.log('a');
                     return;
                 }
             }
