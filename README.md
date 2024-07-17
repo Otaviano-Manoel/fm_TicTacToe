@@ -32,8 +32,9 @@ Your users should be able to:
 
 ### Screenshot
 
-<img src="./src/images/display-desktop.png" alt="Screenshot of the computer project" width="700" height="350">
-<img src="./src/images/display-mobile.png" alt="Mobile projector screenshot" width="275" height="475">
+<img src="./client/src/assets/images/desktop.png" alt="Screenshot of the computer project" width="700" height="350">
+<img src="./client/src/assets/images/iPad.png" alt="Tablet projector screenshot" width="400" height="600">
+<img src="./client/src/assets/images/iPhone 12 Pro.png" alt="Mobile projector screenshot" width="390" height="700">
 
 ### Links
 
