@@ -25,6 +25,7 @@ export interface IGameManager {
         draw: boolean;
         lose: boolean;
     };
+    routeCurrent: string;
 }
 
 export const getDefaultGameManager = (): IGameManager => {
@@ -53,6 +54,7 @@ export const getDefaultGameManager = (): IGameManager => {
             draw: false,
             lose: false,
         },
+        routeCurrent: '',
     };
 
     return defaultGameManager;

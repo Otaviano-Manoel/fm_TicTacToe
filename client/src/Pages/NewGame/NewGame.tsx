@@ -16,8 +16,8 @@ function NewGame() {
     useEffect(() => {
         const resetGame: IGameManager = getDefaultGameManager();
         setGameManager(ControllerGameManager.updateValues(
-            ['game.player1', 'game.player2'/*, 'server'*/, 'sound.play'],
-            [gameManager.game.player1, gameManager.game.player2/*, gameManager.server*/, gameManager.sound.play],
+            ['game.player1', 'game.player2', 'server', 'sound.play'],
+            [gameManager.game.player1, gameManager.game.player2, gameManager.server, gameManager.sound.play],
             resetGame
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +108,7 @@ function NewGame() {
                         NEW GAME (VS CPU)
                     </button>
                 </Link>
-                <Link className={styled['Link']} to='/connecthost'>
+                <Link className={styled['Link']} to='/connect'>
                     <button
                         onClick={() => handlerSelectGame('multiplayer')}
                         className={styled.player}

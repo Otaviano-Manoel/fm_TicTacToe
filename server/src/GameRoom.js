@@ -31,6 +31,9 @@ class GameRoom {
             player2: this.player2,
         };
     }
+    isEmpty() {
+        return !this.player1 && !this.player2;
+    }
 }
 
 module.exports = GameRoom;

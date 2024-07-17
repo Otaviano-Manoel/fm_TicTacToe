@@ -119,6 +119,7 @@ function PanelGame() {
                 if (gameManager.game.type === 'multiplayer') {
                     socket.emit('quitGame', gameManager.server.code, '/');
                 }
+                setGameBoard(getDefaultIGameBoard());
             }
         }
     };

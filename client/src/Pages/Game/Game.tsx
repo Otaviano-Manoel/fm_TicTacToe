@@ -39,9 +39,7 @@ function Game() {
 
     // Initialize game state
     useEffect(() => {
-        if (!gameBoard.startGame) {
-            setGameBoard(updateValueGameBoard(gameBoard, 'startGame', true));
-        }
+        setGameBoard(updateValueGameBoard(gameBoard, 'startGame', true));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -85,21 +83,25 @@ function Game() {
 
     // Handle field click event
     const handlerOnClick = (i: number) => {
+        console.log('opi');
         if (gameManager.game.type === 'solo') {
             if (gameManager.game.player1.mark !== gameBoard.turn) {
                 return;
             }
             if (!selectField(i)) return;
         }
-
+        console.log('op');
         if (gameManager.game.type === 'multiplayer') {
+            console.log('o');
             if (gameManager.server.host) {
                 if (gameManager.game.player1.mark !== gameBoard.turn) {
+                    console.log('a');
                     return;
                 }
             }
             else if (gameManager.server.client) {
                 if (gameManager.game.player2.mark !== gameBoard.turn) {
+                    console.log('a');
                     return;
                 }
             }
@@ -170,7 +172,9 @@ function Game() {
             };
             calculateVictory();
 
-            updateBoard.turn = !updateBoard.turn;
+            if (!updateBoard.endGame) {
+                updateBoard.turn = !updateBoard.turn;
+            }
             setGameBoard(updateBoard);
             return true;
         }

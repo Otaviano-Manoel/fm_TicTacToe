@@ -7,9 +7,11 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: '*', // Permitir qualquer origem
-        methods: ['GET', 'POST'], // Permitir apenas os métodos GET e POST
+        origin: '*',
+        methods: ['GET', 'POST'],
     },
+    pingInterval: 60000, // Intervalo entre pings do servidor para o cliente
+    pingTimeout: 5000, // Tempo que o servidor espera por uma resposta do ping
 });
 
 const PORT = 8080;
@@ -144,6 +146,19 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        const room = roomsManager
+            .listRooms()
+            .find((room) => room.player1 === socket || room.player2 === socket);
+        if (room) {
+            const code = room.id;
+
+            if (room.player1 === socket) {
+                room.player1 = null;
+            } else if (room.player2 === socket) {
+                room.player2 = null;
+            }
+        }
+
         console.log('A client disconnected');
     });
 });
@@ -151,3 +166,22 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
     console.log(`Socket.IO server is running on port ${PORT}`);
 });
+
+const CLEANUP_INTERVAL = 10000; // 1 minuto
+
+setInterval(() => {
+    roomsManager.listRooms().forEach((room) => {
+        // Se a sala está vazia, exclua
+        if (room.player1 === null) {
+            if (room.player2) {
+                room.player2.emit('exitRoom');
+            }
+            roomsManager.deleteRoom(room.id);
+            console.log(`Room closed due to inactivity: ${room.id}`);
+        } else if (room.player2 === null) {
+            room.player1.emit('playerExit');
+        } else {
+            console.log(`Room : ${room.id}`);
+        }
+    });
+}, CLEANUP_INTERVAL);

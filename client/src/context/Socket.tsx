@@ -40,7 +40,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             if (gameManager.server.code !== null) {
                 socket?.emit('reconnect', gameManager.server.code, gameManager.server.host)
             }
-
         });
 
         socket!.on('disconnect', () => {
@@ -66,14 +65,24 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
         socket?.on('exitRoom', () => {
             setGameManager(ControllerGameManager.updateValues(['server.code'], [null], gameManager));
+            if (window.location.pathname === '/game' || window.location.pathname === '/game/panels') {
+                navigate('/connect');
+                ControllerGameManager.updateValues(['server.client'], [false], gameManager)
+            }
         });
         socket?.on('playerExit', () => {
             console.log('The player left');
+            if (window.location.pathname === '/game' || window.location.pathname === '/game/panels') {
+                navigate('/connect');
+            }
         });
 
         socket?.on('startGame', (isStartGame, mark) => {
             if (isStartGame) {
-                setGameManager(ControllerGameManager.updateValues(['game.player2.mark'], [mark], gameManager));
+                if (window.location.pathname === '/') {
+                    navigate('/connect');
+                }
+                setGameManager(ControllerGameManager.updateValues(['game.player2.mark', 'game.type'], [mark, 'multiplayer'], gameManager));
                 navigate('/game');
             }
             else {
@@ -98,10 +107,23 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
         socket?.on('quitGame', (url) => {
             navigate(url);
+            setGameBoard(getDefaultIGameBoard());
         });
 
         socket?.on('error', (message) => {
             window.alert(message);
+            if (gameManager.server.code !== null) {
+                ControllerGameManager.updateValues(['server.code'], [null], gameManager)
+                if (gameManager.server.host) {
+                    ControllerGameManager.updateValues(['server.host'], [false], gameManager)
+                }
+                else if (gameManager.server.client) {
+                    ControllerGameManager.updateValues(['server.client'], [false], gameManager)
+                }
+            }
+            if (window.location.pathname === '/game' || window.location.pathname === '/game/panels') {
+                navigate('/');
+            }
         });
 
         // Limpeza quando o componente é desmontado
