@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import styled from './app.module.scss';
 import { useGameBoard } from '../context/GameBoardContext';
-import NewGame from './NewGamei/NewGamei';
-import PanelGame from './Gamei/Panelsi/panelGamei';
+import NewGame from './NewGame/NewGame';
+import PanelGame from './Game/Panels/PanelGame';
 import ServerConfiguration from './ServerConfiguration';
 import { getDefaultIGameBoard } from '../interface/IGameBoard';
-import Game from './Gamei/Gamei';
+import Game from './Game/Game';
 import ControllerSound from './ControllerSound/ControllerSound';
 import { useGameManager } from '../context/GameManager';
 
