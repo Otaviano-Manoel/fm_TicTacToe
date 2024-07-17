@@ -11,6 +11,7 @@ import { calculateWinner } from '../../utils/GameUtils';
 import CPU from '../../utils/CPU';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import { useSocket } from '../../context/Socket';
+import ActiveSound from '../../utils/soundActive';
 
 function Game() {
     const { gameManager, setGameManager } = useGameManager();
@@ -105,13 +106,13 @@ function Game() {
             }
             if (!selectField(i)) return;
             socket.emit('move', gameManager.server.code, i, gameManager.server.host);
-            console.log('enviar para o outro jogador');
         }
 
     };
 
     // Select a field and update game state
     const selectField = (i: number): boolean => {
+        ActiveSound.click(gameManager, setGameManager);
         if (!gameBoard.fields[i].marked) {
             const updateBoard = controller.updateValues(gameBoard, `fields.${i}.marked`, true);
             updateBoard.fields[i].mark = updateBoard.turn;
@@ -133,11 +134,39 @@ function Game() {
                     } else {
                         updateBoard.numberWins.o++;
                     }
+                    console.log(gameManager)
+                    if (gameManager.game.type === 'solo') {
+                        if (gameManager.game.player1.mark === updateBoard.markWinner) {
+                            ActiveSound.win(gameManager, setGameManager);
+                        }
+                        else {
+                            ActiveSound.lose(gameManager, setGameManager);
+                        }
+                    }
+                    else if (gameManager.game.type === 'multiplayer') {
+                        if (gameManager.server.host) {
+                            if (gameManager.game.player1.mark === updateBoard.markWinner) {
+                                //ActiveSound.win(gameManager, setGameManager)
+                            }
+                            else {
+                                //ActiveSound.lose(gameManager, setGameManager)
+                            }
+                        }
+                        else if (gameManager.server.client) {
+                            if (gameManager.game.player2.mark === updateBoard.markWinner) {
+                                ActiveSound.win(gameManager, setGameManager)
+                            }
+                            else {
+                                ActiveSound.lose(gameManager, setGameManager)
+                            }
+                        }
+                    }
                     navigate('panels');
                 } else if (updateBoard.fields.every(e => e.marked)) {
                     updateBoard.endGame = true;
                     updateBoard.markWinner = undefined;
                     updateBoard.numberWins.ties++;
+                    ActiveSound.lose(gameManager, setGameManager);
                     navigate('panels');
                 }
             };
@@ -173,6 +202,10 @@ function Game() {
         return undefined;
     };
 
+    const soundClick = () => {
+        ActiveSound.click(gameManager, setGameManager);
+    }
+
     return (
         <main className={styled.main}>
             <div className={styled.header}>
@@ -182,7 +215,7 @@ function Game() {
                     <p className={styled.turn}>TURN</p>
                 </div>
                 <Link to={'panels'} className={styled.Link}>
-                    <img className={styled.restart} src={restart} alt="Restart Game" />
+                    <img onClick={soundClick} className={styled.restart} src={restart} alt="Restart Game" />
                 </Link>
             </div>
 

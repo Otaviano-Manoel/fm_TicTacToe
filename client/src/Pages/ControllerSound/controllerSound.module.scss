@@ -1,0 +1,60 @@
+@import '../../assets/style/variables';
+@import '../../assets/style/mixins';
+
+.sound {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    width: 75px;
+    height: 75px;
+
+    @include max-breakpoint($mobile) {
+        top: 10px;
+        right: 10px;
+        width: 65px;
+        height: 65px;
+    }
+
+    button {
+        cursor: pointer;
+        visibility: hidden;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        border-radius: 15px;
+        border-style: none;
+        background-color: $silver;
+        color: $dark-navy;
+        box-shadow: 0px 8px #6b8997;
+
+        @include max-breakpoint($mobile) {
+            font-size: 34px;
+        }
+
+        .line {
+            visibility: hidden;
+            position: absolute;
+            mask-image: url('../../assets/images/icon-x.svg');
+            mask-size: cover;
+            mask-repeat: no-repeat;
+
+            width: 100%;
+            height: 100%; /* Thickness of the line */
+            background-color: rgba($color: red, $alpha: 0.3);
+        }
+        .active {
+            visibility: visible;
+        }
+    }
+    button.active {
+        visibility: visible;
+    }
+    button:active {
+        background-color: $silver-hover;
+        transform: translateY(4px);
+        box-shadow: 0px 0px;
+    }
+}

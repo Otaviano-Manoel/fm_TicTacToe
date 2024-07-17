@@ -37,6 +37,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
         socket!.on('connect', () => {
             console.log('Conectado ao servidor Socket.IO');
+            if (gameManager.server.code !== null) {
+                socket?.emit('reconnect', gameManager.server.code, gameManager.server.host)
+            }
+
         });
 
         socket!.on('disconnect', () => {

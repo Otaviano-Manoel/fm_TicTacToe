@@ -7,6 +7,7 @@ import { useGameManager } from '../../context/GameManager';
 import ControllerGameManager from '../../utils/GameMangerUtils';
 import { getDefaultGameManager, IGameManager } from '../../interface/IGameManager';
 import { useSocket } from '../../context/Socket';
+import ActiveSound from '../../utils/soundActive';
 
 function NewGame() {
     const socket = useSocket();
@@ -15,13 +16,11 @@ function NewGame() {
 
     useEffect(() => {
         const resetGame: IGameManager = getDefaultGameManager();
-        setGameManager(
-            controllerManager.updateValuesArray(
-                ['game.player1', 'game.player2'/*, 'server'*/],
-                [gameManager.game.player1, gameManager.game.player2/*, gameManager.server*/],
-                resetGame
-            )
-        );
+        setGameManager(controllerManager.updateValuesArray(
+            ['game.player1', 'game.player2'/*, 'server'*/, 'sound.play'],
+            [gameManager.game.player1, gameManager.game.player2/*, gameManager.server*/, gameManager.sound.play],
+            resetGame
+        ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -52,12 +51,14 @@ function NewGame() {
     const classMarkSelect = getClassMarkSelect();
 
     const handlerSelectMark = (x: boolean) => {
+        ActiveSound.click(gameManager, setGameManager);
         setGameManager(
             controllerManager.updateValuesArray(['game.player1.mark'], [x], gameManager)
         );
     };
 
     const handlerSelectGame = (value: 'solo' | 'multiplayer') => {
+        ActiveSound.click(gameManager, setGameManager);
         if (value === 'solo') {
             setGameManager(
                 controllerManager.updateValuesArray(

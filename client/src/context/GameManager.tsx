@@ -19,6 +19,9 @@ interface GameManagerProps {
 }
 
 function GameManager(props: GameManagerProps) {
+    const hasAllKeys = (obj: any, keys: string[]): boolean => {
+        return keys.every(key => key in obj);
+    };
 
     const [gameManager, setGameManager] = useState<IGameManager>(() => {
 
@@ -26,8 +29,22 @@ function GameManager(props: GameManagerProps) {
         if (!local) {
             return getDefaultGameManager();
         }
+        try {
 
-        return JSON.parse(local!) as IGameManager;
+            const manager = JSON.parse(local!) as IGameManager;
+            const defaultKeys = Object.keys(getDefaultGameManager());
+
+            if (hasAllKeys(manager, defaultKeys)) {
+                return manager;
+            }
+            else {
+                console.warn('O objeto gameManager recuperado não contém todas as chaves esperadas. Usando o valor padrão.');
+                return getDefaultGameManager();
+            }
+        }
+        catch {
+            return getDefaultGameManager();
+        }
     });
 
     useEffect(() => {

@@ -6,10 +6,11 @@ import { useGameBoard } from '../../../context/GameBoardContext';
 import { useGameManager } from '../../../context/GameManager';
 import { getDefaultIGameBoard } from '../../../interface/IGameBoard';
 import { useSocket } from '../../../context/Socket';
+import ActiveSound from '../../../utils/soundActive';
 
 function PanelGame() {
     const { gameBoard, setGameBoard } = useGameBoard();
-    const { gameManager } = useGameManager();
+    const { gameManager, setGameManager } = useGameManager();
     const socket = useSocket();
 
     // Get class names based on game state
@@ -32,6 +33,7 @@ function PanelGame() {
         };
         if (gameManager.game.type === 'solo') {
             to.quit = gameBoard.endGame ? '/' : '/game';
+            to.next = '/game';
         }
 
         if (gameManager.game.type === 'multiplayer') {
@@ -91,6 +93,7 @@ function PanelGame() {
 
     // Handle click events for the options
     const handlerOnClick = (opt: boolean) => {
+        ActiveSound.click(gameManager, setGameManager);
         if (opt) {
             if (gameManager.game.type === 'multiplayer') {
                 if (gameManager.server.client) return;
@@ -112,8 +115,10 @@ function PanelGame() {
             if (gameManager.server.client) {
                 return;
             }
-            if (gameManager.game.type === 'multiplayer') {
-                socket.emit('quitGame', gameManager.server.code, '/');
+            if (gameBoard.endGame) {
+                if (gameManager.game.type === 'multiplayer') {
+                    socket.emit('quitGame', gameManager.server.code, '/');
+                }
             }
         }
     };

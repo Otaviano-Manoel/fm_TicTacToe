@@ -17,6 +17,14 @@ export interface IGameManager {
         client: boolean;
         move: number | null;
     };
+
+    sound: {
+        play: boolean;
+        click: boolean;
+        win: boolean;
+        draw: boolean;
+        lose: boolean;
+    };
 }
 
 export const getDefaultGameManager = (): IGameManager => {
@@ -37,6 +45,13 @@ export const getDefaultGameManager = (): IGameManager => {
             host: false,
             client: false,
             move: null,
+        },
+        sound: {
+            play: false,
+            click: false,
+            win: false,
+            draw: false,
+            lose: false,
         },
     };
 

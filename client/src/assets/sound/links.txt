@@ -1,0 +1,4 @@
+background = https://freesound.org/people/Mrthenoronha/sounds/476546/
+draw || win = https://freesound.org/people/mehraniiii/sounds/588234/
+lose = https://freesound.org/people/suntemple/sounds/253174/
+click = https://freesound.org/people/DRFX/sounds/416928/

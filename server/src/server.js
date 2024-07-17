@@ -133,6 +133,28 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('reconnect', (code, isHost) => {
+        try {
+            const room = roomsManager.getRoom(code);
+            if (isHost) {
+                room.player1 = socket;
+            } else {
+                room.player2 = socket;
+            }
+            console.log(
+                `Sala fechada:`,
+                roomsManager.listRooms().map((x) => x.id)
+            );
+            console.log('reconectado a sala.');
+        } catch (error) {
+            console.log(
+                `Sala fechada:`,
+                roomsManager.listRooms().map((x) => x.id)
+            );
+            socket.emit('error', error.message);
+        }
+    });
+
     socket.on('disconnect', () => {
         console.log('Um cliente desconectado');
     });

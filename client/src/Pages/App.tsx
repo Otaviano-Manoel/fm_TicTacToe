@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import styled from './app.module.scss';
-import { useGameManager } from '../context/GameManager';
 import { useGameBoard } from '../context/GameBoardContext';
 import NewGame from './NewGame/NewGame';
 import PanelGame from './Game/Panels/PanelGame';
 import ServerConfiguration from './ServerConfiguration';
 import { getDefaultIGameBoard } from '../interface/IGameBoard';
 import Game from './Game/Game';
+import ControllerSound from './ControllerSound/ControllerSound';
+import { useGameManager } from '../context/GameManager';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <div className={styled.app}>
+      <ControllerSound />
       <Routes >
         <Route index path='/' element={<NewGame />} />
         <Route path="/connecthost" element={<ServerConfiguration />} />
@@ -29,7 +31,7 @@ function App() {
           <Route path="panels" element={<PanelGame />} />
         </Route>
       </Routes>
-    </div>
+    </div >
   );
 }
 
